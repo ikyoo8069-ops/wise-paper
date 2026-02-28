@@ -109,6 +109,7 @@ body {
   position: relative;
   z-index: 10;
   display: flex;
+  justify-content: center;
   gap: 4px;
   padding: 16px 12px;
   overflow-x: auto;
@@ -803,7 +804,7 @@ body {
 <nav class="stage-nav" id="stageNav">
   <div class="stage-tab active" data-stage="0">
     <span class="icon">🎯</span>
-    <span>주제가져오기</span>
+    <span>주제잡기</span>
   </div>
   <div class="stage-tab" data-stage="1">
     <span class="icon">📚</span>
@@ -834,76 +835,107 @@ body {
 <!-- MAIN CONTENT -->
 <main class="main-content">
 
-  <!-- ==================== STAGE 0: 주제 가져오기 ==================== -->
+  <!-- ==================== STAGE 0: 주제잡기 ==================== -->
   <section class="stage-panel active" id="stage0">
     <div class="card">
       <div class="card-header">
         <span class="emoji">🎯</span>
         <div>
-          <h3>연구 주제 가져오기</h3>
-          <p>"슬기로운 연구생활"에서 잡은 주제를 논문으로 발전시킵니다</p>
+          <h3>주제잡기</h3>
+          <p>N2B로 연구 주제를 잡고, 논문의 뼈대를 세웁니다</p>
         </div>
       </div>
 
       <div class="n2b-flow">
-        <span class="n">N: 빈틈</span>
+        <span class="n">Not: 뭐가 아닌가</span>
         <span class="arrow">→</span>
-        <span class="b">B: 그럼에도</span>
+        <span class="b">But: 그래서 뭔가</span>
         <span class="arrow">→</span>
-        <span class="b2">B: 그래서</span>
+        <span class="b2">Because: 이유는 뭔가</span>
       </div>
 
-      <div class="input-group">
-        <label>🔬 연구 주제 (빅매치 결과 또는 직접 입력)</label>
-        <textarea id="topicInput" placeholder="예: 자율주행 도로포장 vs 기존 포장관리&#10;&#10;'슬기로운 연구생활'에서 도출한 빅매치 결과를 붙여넣거나,&#10;새로운 연구 주제를 직접 입력하세요."></textarea>
+      <!-- STEP 1: 관심 분야 입력 -->
+      <div id="topicStep1">
+        <div class="input-group">
+          <label>💡 관심 분야 또는 연구 주제를 입력하세요</label>
+          <textarea id="topicInput" rows="3" placeholder="예: 도로 포장관리&#10;예: 노인 건강관리에 AI 적용&#10;예: 중소기업 수출 지원 정책"></textarea>
+        </div>
+
+        <div class="input-group">
+          <label>🎓 연구 분야</label>
+          <div class="chip-group" id="fieldChips">
+            <div class="chip" data-value="공학">⚙️ 공학</div>
+            <div class="chip" data-value="자연과학">🔬 자연과학</div>
+            <div class="chip" data-value="의학/보건">🏥 의학/보건</div>
+            <div class="chip" data-value="사회과학">📊 사회과학</div>
+            <div class="chip" data-value="인문학">📖 인문학</div>
+            <div class="chip" data-value="IT/융합">💻 IT/융합</div>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label>📝 핵심 키워드 (쉼표로 구분, 선택사항)</label>
+          <input type="text" id="keywordsInput" placeholder="예: 포장관리, 자율주행, 딥러닝, 도로인프라">
+        </div>
+
+        <button class="btn btn-primary btn-full" onclick="startN2BAnalysis()">
+          🔍 N2B 주제잡기 시작
+        </button>
       </div>
 
-      <div class="input-group">
-        <label>🎓 연구 분야</label>
-        <div class="chip-group" id="fieldChips">
-          <div class="chip" data-value="공학">⚙️ 공학</div>
-          <div class="chip" data-value="자연과학">🔬 자연과학</div>
-          <div class="chip" data-value="의학/보건">🏥 의학/보건</div>
-          <div class="chip" data-value="사회과학">📊 사회과학</div>
-          <div class="chip" data-value="인문학">📖 인문학</div>
-          <div class="chip" data-value="IT/융합">💻 IT/융합</div>
+      <!-- STEP 2: Not 결과 -->
+      <div id="topicStep2" style="display:none;">
+        <div class="result-box show" style="border-left:3px solid var(--accent-hell);">
+          <h4>❌ Not — 뭐가 아닌가?</h4>
+          <p style="color:var(--text-secondary); margin-bottom:8px;">현재 Best Practice(BP)의 빈틈입니다</p>
+          <div class="content" id="notContent"></div>
+        </div>
+        <button class="btn btn-primary btn-full" onclick="showButStep()" style="margin-top:12px;">
+          다음: ⚡ But — 그래서 뭔가? →
+        </button>
+      </div>
+
+      <!-- STEP 3: But 결과 -->
+      <div id="topicStep3" style="display:none;">
+        <div class="result-box show" style="border-left:3px solid var(--accent-hell); opacity:0.7; max-height:150px; overflow:hidden;">
+          <h4>❌ Not — 뭐가 아닌가?</h4>
+          <div class="content" id="notContentMini"></div>
+        </div>
+        <div class="result-box show" style="border-left:3px solid var(--accent-gold); margin-top:12px;">
+          <h4>⚡ But — 그래서 뭔가?</h4>
+          <p style="color:var(--text-secondary); margin-bottom:8px;">빈틈에도 불구하고 가능한 새로운 접근입니다</p>
+          <div class="content" id="butContent"></div>
+        </div>
+        <button class="btn btn-primary btn-full" onclick="showBecauseStep()" style="margin-top:12px;">
+          다음: ✅ Because — 이유는 뭔가? →
+        </button>
+      </div>
+
+      <!-- STEP 4: Because 결과 + 빅매치 -->
+      <div id="topicStep4" style="display:none;">
+        <div class="result-box show" style="border-left:3px solid var(--accent-hell); opacity:0.7; max-height:100px; overflow:hidden;">
+          <h4>❌ Not — 뭐가 아닌가?</h4>
+          <div class="content" id="notContentMini2"></div>
+        </div>
+        <div class="result-box show" style="border-left:3px solid var(--accent-gold); opacity:0.7; max-height:100px; overflow:hidden; margin-top:8px;">
+          <h4>⚡ But — 그래서 뭔가?</h4>
+          <div class="content" id="butContentMini"></div>
+        </div>
+        <div class="result-box show" style="border-left:3px solid var(--accent-green); margin-top:12px;">
+          <h4>✅ Because — 이유는 뭔가?</h4>
+          <p style="color:var(--text-secondary); margin-bottom:8px;">이 연구가 필요한 이유와 빅매치 구도입니다</p>
+          <div class="content" id="becauseContent"></div>
+        </div>
+        <div style="display:flex; gap:8px; margin-top:12px;">
+          <button class="copy-btn" onclick="copyFullN2B()">📋 전체 복사</button>
+          <button class="btn btn-primary" style="flex:1;" onclick="goToStage(1)">다음: 문헌리뷰 →</button>
         </div>
       </div>
 
-      <div class="input-group">
-        <label>📝 핵심 키워드 (쉼표로 구분)</label>
-        <input type="text" id="keywordsInput" placeholder="예: 포장관리, 자율주행, 딥러닝, 도로인프라">
-      </div>
-
-      <div class="input-group">
-        <label>🎯 연구 목적</label>
-        <select id="purposeSelect">
-          <option value="">선택하세요</option>
-          <option value="새로운 방법론 제안">새로운 방법론 제안</option>
-          <option value="기존 방법 개선">기존 방법 개선</option>
-          <option value="비교 분석">비교 분석</option>
-          <option value="현상 규명">현상 규명</option>
-          <option value="사례 연구">사례 연구</option>
-          <option value="리뷰/서베이">리뷰/서베이</option>
-        </select>
-      </div>
-
-      <button class="btn btn-primary btn-full" onclick="analyzeTopicN2B()">
-        🔍 N2B 분석 시작
-      </button>
-
+      <!-- 로딩 -->
       <div class="loading" id="topicLoading">
         <div class="loading-dots"><span></span><span></span><span></span></div>
         <div class="loading-text">N2B 구조로 연구 주제를 분석하고 있습니다...</div>
-      </div>
-
-      <div class="result-box" id="topicResult">
-        <h4>📊 N2B 주제 분석 결과</h4>
-        <div class="content" id="topicResultContent"></div>
-        <div class="btn-group">
-          <button class="copy-btn" onclick="copyResult('topicResultContent')">📋 복사</button>
-          <button class="btn btn-primary" onclick="goToStage(1)">다음: 문헌리뷰 →</button>
-        </div>
       </div>
     </div>
   </section>
@@ -920,11 +952,11 @@ body {
       </div>
 
       <div class="n2b-flow">
-        <span class="n">N: 선행연구 한계</span>
+        <span class="n">Not: 선행연구에서 뭐가 안 되나</span>
         <span class="arrow">→</span>
-        <span class="b">B: 부분적 해결</span>
+        <span class="b">But: 그래서 뭐가 나왔나</span>
         <span class="arrow">→</span>
-        <span class="b2">B: 남은 빈틈 = 나의 연구</span>
+        <span class="b2">Because: 남은 빈틈 = 나의 연구</span>
       </div>
 
       <div class="card-desc">
@@ -979,11 +1011,11 @@ body {
       </div>
 
       <div class="n2b-flow">
-        <span class="n">서론: Not (왜 부족한가)</span>
+        <span class="n">서론: Not (뭐가 아닌가)</span>
         <span class="arrow">→</span>
-        <span class="b">본론: But (어떻게 해결하나)</span>
+        <span class="b">본론: But (그래서 뭔가)</span>
         <span class="arrow">→</span>
-        <span class="b2">결론: Because (왜 의미있나)</span>
+        <span class="b2">결론: Because (이유는 뭔가)</span>
       </div>
 
       <div class="card-desc">
@@ -1047,16 +1079,16 @@ body {
       </div>
 
       <div class="n2b-flow">
-        <span class="n">¶1-2: 배경 + 문제제기</span>
+        <span class="n">¶1-2: 뭐가 아닌가 (문제)</span>
         <span class="arrow">→</span>
-        <span class="b">¶3: 기존 접근의 한계</span>
+        <span class="b">¶3: 그래서 뭔가 (접근)</span>
         <span class="arrow">→</span>
-        <span class="b2">¶4: 본 연구의 목적과 기여</span>
+        <span class="b2">¶4: 이유는 뭔가 (목적)</span>
       </div>
 
       <div class="card-desc">
         서론은 N2B의 축소판입니다.<br>
-        "이런 문제가 있다(Not) → 기존 방법은 부족하다(But) → 그래서 이 연구가 필요하다(Because)"<br>
+        "이건 아니다(Not) → 그래서 이건 어떤가(But) → 이유는 이거다(Because)"<br>
         이 흐름만 잡으면 서론의 80%가 완성됩니다.
       </div>
 
@@ -1106,11 +1138,11 @@ body {
       </div>
 
       <div class="n2b-flow">
-        <span class="n">배경+문제 (2문장)</span>
+        <span class="n">Not: 뭐가 아닌가 (2문장)</span>
         <span class="arrow">→</span>
-        <span class="b">방법+결과 (3문장)</span>
+        <span class="b">But: 그래서 뭔가 (3문장)</span>
         <span class="arrow">→</span>
-        <span class="b2">의의+기여 (1-2문장)</span>
+        <span class="b2">Because: 이유는 뭔가 (2문장)</span>
       </div>
 
       <div class="card-desc">
@@ -1220,17 +1252,17 @@ body {
       </div>
 
       <div class="n2b-flow">
-        <span class="n">N: 리뷰어 지적</span>
+        <span class="n">Not: 뭘 지적했나</span>
         <span class="arrow">→</span>
-        <span class="b">B: 인정할 점</span>
+        <span class="b">But: 그래서 뭘 인정하나</span>
         <span class="arrow">→</span>
-        <span class="b2">B: 수정/반박 근거</span>
+        <span class="b2">Because: 수정/반박 이유는 뭔가</span>
       </div>
 
       <div class="card-desc">
         심사의견도 N2B 구조입니다.<br>
-        리뷰어가 지적한 빈틈(Not)을 정확히 파악하고,<br>
-        인정할 것은 인정하되(But), 논리적 근거로 답변(Because)합니다.
+        리뷰어가 지적한 것(Not)을 정확히 파악하고,<br>
+        인정할 것은 인정하되(But), 그 이유를 논리적으로 답변(Because)합니다.
       </div>
 
       <div class="input-group">
@@ -1418,79 +1450,100 @@ function showToast(msg) {
 
 // ==================== STAGE FUNCTIONS ====================
 
-function analyzeTopicN2B() {
+// ==================== STAGE 0: 주제잡기 (N2B 단계별) ====================
+
+let n2bData = { not: '', but: '', because: '' };
+
+function startN2BAnalysis() {
   const topic = document.getElementById('topicInput').value.trim();
   const field = getSelectedChip('fieldChips');
   const keywords = document.getElementById('keywordsInput').value.trim();
-  const purpose = document.getElementById('purposeSelect').value;
   
-  if (!topic) { showToast('⚠️ 연구 주제를 입력해주세요'); return; }
+  if (!topic) { showToast('⚠️ 관심 분야를 입력해주세요'); return; }
   
   stageData.topic = topic;
   stageData.field = field;
   stageData.keywords = keywords;
-  stageData.purpose = purpose;
 
   showLoading('topicLoading');
+  document.getElementById('topicStep1').style.display = 'none';
 
   if (USE_API) {
-    callAPI('/api/topic', { topic, field, keywords, purpose })
-      .then(result => showAIResult('topicLoading', 'topicResult', 'topicResultContent', result, 0))
+    callAPI('/api/topic', { topic, field, keywords, purpose: '' })
+      .then(result => {
+        hideLoading('topicLoading');
+        parseN2BResult(result);
+        showNotStep();
+      })
       .catch(err => {
         console.error(err);
+        hideLoading('topicLoading');
         showToast('⚠️ AI 서버 연결 실패 — 템플릿 결과를 보여드립니다');
-        analyzeTopicFallback(topic, field, keywords, purpose);
+        parseN2BFallback(topic, field, keywords);
+        showNotStep();
       });
   } else {
-    analyzeTopicFallback(topic, field, keywords, purpose);
+    setTimeout(() => {
+      hideLoading('topicLoading');
+      parseN2BFallback(topic, field, keywords);
+      showNotStep();
+    }, 1500);
   }
 }
 
-function analyzeTopicFallback(topic, field, keywords, purpose) {
-  const isPavement = /포장|pavement|도로|PMS|균열|rutting|crack/i.test(topic + keywords);
-  let result;
-  if (isPavement) {
-    result = `━━━━━━━━━━━━━━━━━━━━━━━━━━
-🎯 연구 주제 N2B 분석 — 포장관리 [템플릿]
-━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-📌 주제: ${topic}
-📂 분야: ${field || '공학'}
-🔑 키워드: ${keywords || '포장관리, PMS, 딥러닝, 디지털트윈'}
-
-━━━ 현재 Best Practice (BP) ━━━
-
-🏆 BP1: AI/ML 기반 포장 상태 평가
-🏆 BP2: 디지털트윈(DT) 기반 실시간 모니터링
-🏆 BP3: 강화학습(RL) 기반 유지보수 최적화
-
-━━━ N2B 구조 분석 ━━━
-
-❌ Not: 파편화된 접근, 정적 데이터 의존, 해석 불가
-⚡ But: DT+GNN 통합 가능성 대두 (2024~2025)
-✅ Because: 통합 프레임워크로 실시간 예측·의사결정 일원화
-
-🥊 "파편화된 AI-PMS" vs "통합 디지털트윈 PMS"
-
-⚠️ 이것은 템플릿 결과입니다. API 연결 후 실제 AI 분석이 제공됩니다.`;
-  } else {
-    result = `━━━━━━━━━━━━━━━━━━━━━━━━━━
-🎯 연구 주제 N2B 분석 [템플릿]
-━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-📌 주제: ${topic}
-📂 분야: ${field}
-🔑 키워드: ${keywords}
-
-━━━ N2B 구조 분석 ━━━
-
-❌ Not: 이 분야의 체계적 접근 부족
-⚡ But: ${keywords || '최신 기술'}의 발전으로 새 접근 가능
-✅ Because: ${purpose || '새로운 방법론 제안'}으로 기여 가능
-
-⚠️ 이것은 템플릿 결과입니다. API 연결 후 실제 AI 분석이 제공됩니다.`;
+function parseN2BResult(result) {
+  // AI 결과를 Not / But / Because 섹션으로 분리
+  const lines = result.split('\n');
+  let section = '';
+  let notLines = [], butLines = [], becauseLines = [];
+  
+  for (const line of lines) {
+    if (/❌|Not.*[:(]|현재.*빈틈|BP.*빈틈/.test(line)) section = 'not';
+    else if (/⚡|But.*[:(]|그럼에도|그래서 뭔가/.test(line)) section = 'but';
+    else if (/✅|Because.*[:(]|그래서.*연구|이유|논문화|빅매치 구도|🥊/.test(line)) section = 'because';
+    
+    if (section === 'not') notLines.push(line);
+    else if (section === 'but') butLines.push(line);
+    else if (section === 'because') becauseLines.push(line);
   }
-  simulateAI('topicLoading', 'topicResult', 'topicResultContent', result, 0);
+  
+  n2bData.not = notLines.join('\n').trim() || result;
+  n2bData.but = butLines.join('\n').trim() || '(But 분석 결과)';
+  n2bData.because = becauseLines.join('\n').trim() || '(Because 분석 결과)';
+}
+
+function parseN2BFallback(topic, field, keywords) {
+  n2bData.not = `❌ Not — 뭐가 아닌가?\n\n현재 "${topic}" 분야의 빈틈:\n\n1. 기존 접근이 체계적이지 않다\n2. 데이터 기반 의사결정이 부족하다\n3. 통합적 프레임워크가 없다\n4. 실시간 대응이 불가능하다\n5. 해석 가능성이 부족하다\n\n⚠️ API 연결 후 실제 AI 분석이 제공됩니다.`;
+  
+  n2bData.but = `⚡ But — 그래서 뭔가?\n\n그럼에도 불구하고:\n\n→ ${keywords || '최신 기술'}의 발전으로 새 접근 가능\n→ AI/ML 기법이 이 분야에 적용되기 시작\n→ 풍부한 데이터 인프라 활용 가능\n\n⚠️ API 연결 후 실제 AI 분석이 제공됩니다.`;
+  
+  n2bData.because = `✅ Because — 이유는 뭔가?\n\n이 연구가 필요한 이유:\n\nA) 기존 빈틈을 메우는 새 프레임워크 제안\nB) 데이터 기반 의사결정 체계 구축\nC) 실시간 대응 가능한 시스템 개발\n\n━━━ 추천 빅매치 구도 ━━━\n\n🥊 "기존 방식" vs "새로운 접근"\n\n⚠️ API 연결 후 실제 AI 분석이 제공됩니다.`;
+}
+
+function showNotStep() {
+  document.getElementById('notContent').textContent = n2bData.not;
+  document.getElementById('topicStep2').style.display = 'block';
+  markComplete(0);
+}
+
+function showButStep() {
+  document.getElementById('topicStep2').style.display = 'none';
+  document.getElementById('notContentMini').textContent = n2bData.not;
+  document.getElementById('butContent').textContent = n2bData.but;
+  document.getElementById('topicStep3').style.display = 'block';
+}
+
+function showBecauseStep() {
+  document.getElementById('topicStep3').style.display = 'none';
+  document.getElementById('notContentMini2').textContent = n2bData.not;
+  document.getElementById('butContentMini').textContent = n2bData.but;
+  document.getElementById('becauseContent').textContent = n2bData.because;
+  document.getElementById('topicStep4').style.display = 'block';
+}
+
+function copyFullN2B() {
+  const full = `━━━ Not: 뭐가 아닌가? ━━━\n${n2bData.not}\n\n━━━ But: 그래서 뭔가? ━━━\n${n2bData.but}\n\n━━━ Because: 이유는 뭔가? ━━━\n${n2bData.because}`;
+  navigator.clipboard.writeText(full).then(() => showToast('📋 N2B 전체 분석 복사 완료!'));
 }
 
 function generateLitReview() {
