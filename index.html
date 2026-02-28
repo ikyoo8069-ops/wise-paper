@@ -1,0 +1,1707 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>📝 슬기로운 논문생활</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/pretendard/1.3.9/static/pretendard.min.css" rel="stylesheet">
+<style>
+:root {
+  --bg-primary: #0a0f1e;
+  --bg-secondary: #111827;
+  --bg-card: #1a2235;
+  --bg-card-hover: #1f2a40;
+  --accent-heaven: #38bdf8;
+  --accent-hell: #f43f5e;
+  --accent-gold: #fbbf24;
+  --accent-green: #34d399;
+  --accent-purple: #a78bfa;
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --border-color: #1e293b;
+  --shadow-glow: 0 0 30px rgba(56, 189, 248, 0.15);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* === ANIMATED BACKGROUND === */
+.bg-atmosphere {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.bg-atmosphere::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(ellipse at 30% 20%, rgba(56,189,248,0.06) 0%, transparent 50%),
+              radial-gradient(ellipse at 70% 80%, rgba(244,63,94,0.04) 0%, transparent 50%),
+              radial-gradient(ellipse at 50% 50%, rgba(167,139,250,0.03) 0%, transparent 60%);
+  animation: bgDrift 20s ease-in-out infinite alternate;
+}
+@keyframes bgDrift {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  100% { transform: translate(-3%, -3%) rotate(2deg); }
+}
+
+/* === HEADER === */
+.header {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  padding: 40px 20px 20px;
+}
+.header-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, rgba(56,189,248,0.15), rgba(167,139,250,0.15));
+  border: 1px solid rgba(56,189,248,0.2);
+  border-radius: 100px;
+  padding: 6px 18px;
+  font-size: 12px;
+  color: var(--accent-heaven);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.header h1 {
+  font-size: 32px;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--accent-heaven), var(--accent-purple));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 12px;
+}
+.tagline {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.tagline .heaven { color: var(--accent-heaven); }
+.tagline .hell { color: var(--accent-hell); }
+.sub-tagline {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+.sub-tagline strong {
+  color: var(--accent-gold);
+  font-weight: 600;
+}
+
+/* === STAGE NAVIGATION === */
+.stage-nav {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  gap: 4px;
+  padding: 16px 12px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.stage-nav::-webkit-scrollbar { display: none; }
+
+.stage-tab {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 10px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 64px;
+  position: relative;
+}
+.stage-tab .icon {
+  font-size: 20px;
+  transition: transform 0.3s ease;
+}
+.stage-tab:hover {
+  background: var(--bg-card);
+  color: var(--text-secondary);
+}
+.stage-tab.active {
+  background: linear-gradient(135deg, rgba(56,189,248,0.15), rgba(167,139,250,0.1));
+  border-color: rgba(56,189,248,0.3);
+  color: var(--accent-heaven);
+}
+.stage-tab.active .icon { transform: scale(1.15); }
+.stage-tab.completed::after {
+  content: '✓';
+  position: absolute;
+  top: 4px;
+  right: 6px;
+  font-size: 9px;
+  color: var(--accent-green);
+  font-weight: 700;
+}
+
+/* === MAIN CONTENT === */
+.main-content {
+  position: relative;
+  z-index: 10;
+  padding: 0 16px 140px;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+/* === STAGE PANELS === */
+.stage-panel {
+  display: none;
+  animation: fadeSlideIn 0.4s ease;
+}
+.stage-panel.active { display: block; }
+
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* === CARDS === */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 16px;
+  transition: all 0.3s ease;
+}
+.card:hover {
+  border-color: rgba(56,189,248,0.2);
+  box-shadow: var(--shadow-glow);
+}
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.card-header .emoji { font-size: 24px; }
+.card-header h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.card-header p {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+.card-desc {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: 16px;
+}
+
+/* === N2B FLOW INDICATOR === */
+.n2b-flow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 16px;
+  background: linear-gradient(135deg, rgba(244,63,94,0.08), rgba(251,191,36,0.08), rgba(52,211,153,0.08));
+  border-radius: 12px;
+  margin-bottom: 16px;
+  font-size: 13px;
+  font-weight: 600;
+}
+.n2b-flow .n { color: var(--accent-hell); }
+.n2b-flow .b { color: var(--accent-gold); }
+.n2b-flow .b2 { color: var(--accent-green); }
+.n2b-flow .arrow { color: var(--text-muted); font-size: 11px; }
+
+/* === FORM ELEMENTS === */
+.input-group {
+  margin-bottom: 16px;
+}
+.input-group label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+}
+.input-group textarea,
+.input-group input[type="text"],
+.input-group select {
+  width: 100%;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 14px 16px;
+  color: var(--text-primary);
+  font-size: 14px;
+  font-family: inherit;
+  resize: vertical;
+  transition: border-color 0.3s ease;
+}
+.input-group textarea:focus,
+.input-group input[type="text"]:focus,
+.input-group select:focus {
+  outline: none;
+  border-color: var(--accent-heaven);
+}
+.input-group textarea { min-height: 100px; }
+
+/* === BUTTONS === */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: 12px;
+  border: none;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent-heaven), var(--accent-purple));
+  color: white;
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(56,189,248,0.3);
+}
+.btn-secondary {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+}
+.btn-secondary:hover {
+  border-color: var(--accent-heaven);
+  color: var(--text-primary);
+}
+.btn-gold {
+  background: linear-gradient(135deg, var(--accent-gold), #f59e0b);
+  color: #1a1a2e;
+}
+.btn-gold:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(251,191,36,0.3);
+}
+.btn-full { width: 100%; }
+.btn-group {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+/* === RESULT BOX === */
+.result-box {
+  background: linear-gradient(135deg, rgba(56,189,248,0.05), rgba(167,139,250,0.05));
+  border: 1px solid rgba(56,189,248,0.15);
+  border-radius: 14px;
+  padding: 20px;
+  margin-top: 16px;
+  display: none;
+}
+.result-box.show { display: block; animation: fadeSlideIn 0.5s ease; }
+.result-box h4 {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--accent-heaven);
+  margin-bottom: 12px;
+}
+.result-box .content {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  white-space: pre-wrap;
+}
+
+/* === LOADING === */
+.loading {
+  display: none;
+  text-align: center;
+  padding: 30px;
+}
+.loading.show { display: block; }
+.loading-dots {
+  display: inline-flex;
+  gap: 6px;
+}
+.loading-dots span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent-heaven);
+  animation: bounce 1.2s ease-in-out infinite;
+}
+.loading-dots span:nth-child(2) { animation-delay: 0.15s; }
+.loading-dots span:nth-child(3) { animation-delay: 0.3s; }
+@keyframes bounce {
+  0%, 80%, 100% { transform: scale(0.6); opacity: 0.3; }
+  40% { transform: scale(1); opacity: 1; }
+}
+.loading-text {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: 12px;
+}
+
+/* === CHIP SELECT === */
+.chip-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.chip {
+  padding: 8px 16px;
+  border-radius: 100px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.chip:hover {
+  border-color: var(--accent-heaven);
+  color: var(--text-primary);
+}
+.chip.selected {
+  background: linear-gradient(135deg, rgba(56,189,248,0.2), rgba(167,139,250,0.15));
+  border-color: var(--accent-heaven);
+  color: var(--accent-heaven);
+}
+
+/* === STEP INDICATOR === */
+.step-indicator {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 20px;
+}
+.step-dot {
+  width: 28px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--border-color);
+  transition: all 0.3s ease;
+}
+.step-dot.active {
+  background: var(--accent-heaven);
+  width: 40px;
+}
+.step-dot.done { background: var(--accent-green); }
+
+/* === SUMMARY TABLE === */
+.summary-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 6px;
+}
+.summary-table td {
+  padding: 10px 14px;
+  font-size: 13px;
+  background: var(--bg-secondary);
+}
+.summary-table td:first-child {
+  border-radius: 8px 0 0 8px;
+  color: var(--text-muted);
+  font-weight: 600;
+  width: 100px;
+}
+.summary-table td:last-child {
+  border-radius: 0 8px 8px 0;
+  color: var(--text-primary);
+}
+
+/* === COPY BUTTON === */
+.copy-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.copy-btn:hover {
+  border-color: var(--accent-heaven);
+  color: var(--accent-heaven);
+}
+
+/* === BOTTOM NAV === */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: rgba(10,15,30,0.95);
+  backdrop-filter: blur(20px);
+  border-top: 1px solid var(--border-color);
+  padding: 12px 16px;
+  padding-bottom: max(12px, env(safe-area-inset-bottom));
+}
+.bottom-nav-inner {
+  display: flex;
+  gap: 10px;
+  max-width: 720px;
+  margin: 0 auto;
+}
+.bottom-nav .btn { flex: 1; }
+
+/* === PROGRESS BAR === */
+.progress-bar {
+  position: relative;
+  z-index: 10;
+  height: 3px;
+  background: var(--border-color);
+  margin: 0 16px;
+  border-radius: 2px;
+  overflow: hidden;
+}
+.progress-bar .fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-heaven), var(--accent-purple));
+  border-radius: 2px;
+  transition: width 0.5s ease;
+}
+
+/* === TOAST === */
+.toast {
+  position: fixed;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--bg-card);
+  border: 1px solid var(--accent-green);
+  color: var(--accent-green);
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  opacity: 0;
+  transition: all 0.3s ease;
+  z-index: 200;
+  pointer-events: none;
+}
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* === BIGMATCH MAKER GUIDE === */
+.guide-toggle {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  margin: 12px 16px 0;
+}
+.guide-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 20px;
+  border-radius: 100px;
+  border: 1px solid rgba(251,191,36,0.3);
+  background: linear-gradient(135deg, rgba(251,191,36,0.08), rgba(244,63,94,0.06));
+  color: var(--accent-gold);
+  font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.guide-toggle-btn:hover {
+  background: linear-gradient(135deg, rgba(251,191,36,0.15), rgba(244,63,94,0.1));
+  transform: translateY(-1px);
+}
+.guide-toggle-btn .arrow-icon {
+  transition: transform 0.3s ease;
+  font-size: 11px;
+}
+.guide-toggle-btn.open .arrow-icon {
+  transform: rotate(180deg);
+}
+
+.guide-panel {
+  position: relative;
+  z-index: 10;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s ease, opacity 0.4s ease;
+  opacity: 0;
+  margin: 0 16px;
+}
+.guide-panel.open {
+  max-height: 2000px;
+  opacity: 1;
+}
+.guide-inner {
+  max-width: 720px;
+  margin: 12px auto 8px;
+}
+.guide-card {
+  background: linear-gradient(135deg, rgba(251,191,36,0.06), rgba(244,63,94,0.04), rgba(56,189,248,0.04));
+  border: 1px solid rgba(251,191,36,0.15);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 12px;
+}
+.guide-card h3 {
+  font-size: 18px;
+  font-weight: 800;
+  margin-bottom: 16px;
+  text-align: center;
+}
+.guide-card h3 .gold { color: var(--accent-gold); }
+
+.bigmatch-story {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.story-step {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+.story-num {
+  flex: 0 0 auto;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 800;
+  color: white;
+}
+.story-num.step1 { background: linear-gradient(135deg, var(--accent-gold), #f59e0b); }
+.story-num.step2 { background: linear-gradient(135deg, var(--accent-hell), #e11d48); }
+.story-num.step3 { background: linear-gradient(135deg, var(--accent-heaven), var(--accent-purple)); }
+.story-content h4 {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.story-content h4 .label { color: var(--text-muted); font-weight: 500; font-size: 12px; }
+.story-content p {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+.story-content .example {
+  margin-top: 6px;
+  padding: 8px 12px;
+  background: rgba(0,0,0,0.2);
+  border-radius: 8px;
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.guide-vs {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 16px 0;
+  padding: 16px;
+  background: rgba(0,0,0,0.15);
+  border-radius: 12px;
+}
+.vs-box {
+  flex: 1;
+  text-align: center;
+  padding: 12px;
+  border-radius: 10px;
+}
+.vs-box.champ {
+  background: rgba(251,191,36,0.1);
+  border: 1px solid rgba(251,191,36,0.2);
+}
+.vs-box.challenger {
+  background: rgba(56,189,248,0.1);
+  border: 1px solid rgba(56,189,248,0.2);
+}
+.vs-box .vs-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+.vs-box.champ .vs-label { color: var(--accent-gold); }
+.vs-box.challenger .vs-label { color: var(--accent-heaven); }
+.vs-box .vs-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.vs-icon {
+  font-size: 20px;
+  font-weight: 900;
+  color: var(--accent-hell);
+  flex: 0 0 auto;
+}
+
+.guide-bottom-msg {
+  text-align: center;
+  margin-top: 12px;
+  padding: 12px;
+  background: rgba(52,211,153,0.08);
+  border: 1px solid rgba(52,211,153,0.15);
+  border-radius: 10px;
+}
+.guide-bottom-msg p {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+.guide-bottom-msg strong { color: var(--accent-green); }
+.guide-bottom-msg .punchline {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-top: 8px;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 380px) {
+  .header h1 { font-size: 26px; }
+  .tagline { font-size: 15px; }
+  .stage-tab { min-width: 56px; padding: 8px 10px; }
+  .stage-tab .icon { font-size: 18px; }
+  .guide-vs { flex-direction: column; }
+  .vs-icon { transform: rotate(90deg); }
+}
+</style>
+</head>
+<body>
+
+<div class="bg-atmosphere"></div>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-badge">
+    <span>N2B</span>
+    <span>Framework</span>
+  </div>
+  <h1>📝 슬기로운 논문생활</h1>
+  <div class="tagline">
+    논문 쓰면 <span class="heaven">천국</span>, 못 쓰면 <span class="hell">지옥</span>
+  </div>
+  <div class="sub-tagline"><strong>N2B</strong>가 천국으로 안내합니다</div>
+</header>
+
+<!-- BIGMATCH MAKER GUIDE -->
+<div class="guide-toggle">
+  <button class="guide-toggle-btn" id="guideBtn" onclick="toggleGuide()">
+    🥊 논문 = 빅매치! 이게 뭔가요? <span class="arrow-icon">▼</span>
+  </button>
+</div>
+
+<div class="guide-panel" id="guidePanel">
+  <div class="guide-inner">
+    <div class="guide-card">
+      <h3>🥊 당신은 <span class="gold">빅매치 메이커</span>입니다</h3>
+      
+      <div class="bigmatch-story">
+        <div class="story-step">
+          <div class="story-num step1">1</div>
+          <div class="story-content">
+            <h4>빅매치를 만들어라 <span class="label">— 서론</span></h4>
+            <p>"신사숙녀 여러분! 오늘의 대결을 소개합니다!"<br>
+            현재 챔피언(BP)의 빈틈을 찾아 도전자(내 연구)를 세우세요.<br>
+            <strong>대립하는 이름 두 개가 붙으면, 빅매치가 성립합니다.</strong></p>
+            <div class="example">
+              💡 빈틈만 있으면 불만이고, 이름이 붙으면 연구 주제가 됩니다.<br>
+              "비 올 때 위험해요" → 불만<br>
+              "사후탐지형" vs "사전예측형" → 빅매치 = 논문 주제!
+            </div>
+          </div>
+        </div>
+
+        <div class="guide-vs">
+          <div class="vs-box champ">
+            <div class="vs-label">🏆 현재 챔피언</div>
+            <div class="vs-name">기존 BP</div>
+          </div>
+          <div class="vs-icon">VS</div>
+          <div class="vs-box challenger">
+            <div class="vs-label">⚡ 도전자</div>
+            <div class="vs-name">나의 연구</div>
+          </div>
+        </div>
+
+        <div class="story-step">
+          <div class="story-num step2">2</div>
+          <div class="story-content">
+            <h4>시합을 시켜라 <span class="label">— 본론</span></h4>
+            <p>실험 설계 = 경기 규칙<br>
+            데이터 수집 = 경기 진행<br>
+            분석 = 라운드별 판정<br>
+            <strong>공정한 조건에서 실제로 붙여보는 것!</strong></p>
+          </div>
+        </div>
+
+        <div class="story-step">
+          <div class="story-num step3">3</div>
+          <div class="story-content">
+            <h4>결과를 발표하라 <span class="label">— 결론</span></h4>
+            <p>"승자는...!" 또는 "무승부지만 도전자가 이 영역에서 앞섰습니다!"<br>
+            <strong>모두가 궁금해하는 바로 그 결과.</strong><br>
+            좋은 논문은 읽기 전에 이미 "누가 이겼을까?" 궁금하게 만듭니다.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="guide-bottom-msg">
+        <p><strong>못 쓰는 논문</strong> = 혼자 연구하고 보고서 쓰는 것<br>
+        <strong>잘 쓰는 논문</strong> = 빅매치를 만들고, 시합시키고, 결과를 발표하는 것</p>
+        <div class="punchline">논문 작성자 = 빅매치 메이커 🥊</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PROGRESS -->
+<div class="progress-bar">
+  <div class="fill" id="progressFill" style="width: 0%"></div>
+</div>
+
+<!-- STAGE NAVIGATION -->
+<nav class="stage-nav" id="stageNav">
+  <div class="stage-tab active" data-stage="0">
+    <span class="icon">🎯</span>
+    <span>주제가져오기</span>
+  </div>
+  <div class="stage-tab" data-stage="1">
+    <span class="icon">📚</span>
+    <span>문헌리뷰</span>
+  </div>
+  <div class="stage-tab" data-stage="2">
+    <span class="icon">🏗️</span>
+    <span>논문구조</span>
+  </div>
+  <div class="stage-tab" data-stage="3">
+    <span class="icon">✍️</span>
+    <span>서론작성</span>
+  </div>
+  <div class="stage-tab" data-stage="4">
+    <span class="icon">📋</span>
+    <span>초록생성</span>
+  </div>
+  <div class="stage-tab" data-stage="5">
+    <span class="icon">📮</span>
+    <span>저널매칭</span>
+  </div>
+  <div class="stage-tab" data-stage="6">
+    <span class="icon">🛡️</span>
+    <span>심사대응</span>
+  </div>
+</nav>
+
+<!-- MAIN CONTENT -->
+<main class="main-content">
+
+  <!-- ==================== STAGE 0: 주제 가져오기 ==================== -->
+  <section class="stage-panel active" id="stage0">
+    <div class="card">
+      <div class="card-header">
+        <span class="emoji">🎯</span>
+        <div>
+          <h3>연구 주제 가져오기</h3>
+          <p>"슬기로운 연구생활"에서 잡은 주제를 논문으로 발전시킵니다</p>
+        </div>
+      </div>
+
+      <div class="n2b-flow">
+        <span class="n">N: 빈틈</span>
+        <span class="arrow">→</span>
+        <span class="b">B: 그럼에도</span>
+        <span class="arrow">→</span>
+        <span class="b2">B: 그래서</span>
+      </div>
+
+      <div class="input-group">
+        <label>🔬 연구 주제 (빅매치 결과 또는 직접 입력)</label>
+        <textarea id="topicInput" placeholder="예: 자율주행 도로포장 vs 기존 포장관리&#10;&#10;'슬기로운 연구생활'에서 도출한 빅매치 결과를 붙여넣거나,&#10;새로운 연구 주제를 직접 입력하세요."></textarea>
+      </div>
+
+      <div class="input-group">
+        <label>🎓 연구 분야</label>
+        <div class="chip-group" id="fieldChips">
+          <div class="chip" data-value="공학">⚙️ 공학</div>
+          <div class="chip" data-value="자연과학">🔬 자연과학</div>
+          <div class="chip" data-value="의학/보건">🏥 의학/보건</div>
+          <div class="chip" data-value="사회과학">📊 사회과학</div>
+          <div class="chip" data-value="인문학">📖 인문학</div>
+          <div class="chip" data-value="IT/융합">💻 IT/융합</div>
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label>📝 핵심 키워드 (쉼표로 구분)</label>
+        <input type="text" id="keywordsInput" placeholder="예: 포장관리, 자율주행, 딥러닝, 도로인프라">
+      </div>
+
+      <div class="input-group">
+        <label>🎯 연구 목적</label>
+        <select id="purposeSelect">
+          <option value="">선택하세요</option>
+          <option value="새로운 방법론 제안">새로운 방법론 제안</option>
+          <option value="기존 방법 개선">기존 방법 개선</option>
+          <option value="비교 분석">비교 분석</option>
+          <option value="현상 규명">현상 규명</option>
+          <option value="사례 연구">사례 연구</option>
+          <option value="리뷰/서베이">리뷰/서베이</option>
+        </select>
+      </div>
+
+      <button class="btn btn-primary btn-full" onclick="analyzeTopicN2B()">
+        🔍 N2B 분석 시작
+      </button>
+
+      <div class="loading" id="topicLoading">
+        <div class="loading-dots"><span></span><span></span><span></span></div>
+        <div class="loading-text">N2B 구조로 연구 주제를 분석하고 있습니다...</div>
+      </div>
+
+      <div class="result-box" id="topicResult">
+        <h4>📊 N2B 주제 분석 결과</h4>
+        <div class="content" id="topicResultContent"></div>
+        <div class="btn-group">
+          <button class="copy-btn" onclick="copyResult('topicResultContent')">📋 복사</button>
+          <button class="btn btn-primary" onclick="goToStage(1)">다음: 문헌리뷰 →</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== STAGE 1: 문헌리뷰 ==================== -->
+  <section class="stage-panel" id="stage1">
+    <div class="card">
+      <div class="card-header">
+        <span class="emoji">📚</span>
+        <div>
+          <h3>N2B 문헌 리뷰</h3>
+          <p>선행연구를 N2B 구조로 체계적으로 정리합니다</p>
+        </div>
+      </div>
+
+      <div class="n2b-flow">
+        <span class="n">N: 선행연구 한계</span>
+        <span class="arrow">→</span>
+        <span class="b">B: 부분적 해결</span>
+        <span class="arrow">→</span>
+        <span class="b2">B: 남은 빈틈 = 나의 연구</span>
+      </div>
+
+      <div class="card-desc">
+        AI가 연구 주제 관련 주요 선행연구를 탐색하고,<br>
+        각 연구의 성과와 한계를 N2B 구조로 분류합니다.<br>
+        빈틈의 계보가 곧 문헌리뷰의 논리적 흐름이 됩니다.
+      </div>
+
+      <div class="input-group">
+        <label>📖 이미 알고 있는 핵심 논문 (선택사항)</label>
+        <textarea id="knownPapers" placeholder="예: Kim et al. (2023) - Deep learning for pavement crack detection&#10;Lee et al. (2022) - Autonomous road inspection system&#10;&#10;알고 있는 논문이 있으면 입력하세요. 없으면 비워두셔도 됩니다."></textarea>
+      </div>
+
+      <div class="input-group">
+        <label>🔢 리뷰 범위</label>
+        <div class="chip-group" id="reviewScope">
+          <div class="chip selected" data-value="최근 5년">최근 5년</div>
+          <div class="chip" data-value="최근 10년">최근 10년</div>
+          <div class="chip" data-value="전체">전체 기간</div>
+        </div>
+      </div>
+
+      <button class="btn btn-primary btn-full" onclick="generateLitReview()">
+        📚 N2B 문헌리뷰 생성
+      </button>
+
+      <div class="loading" id="litLoading">
+        <div class="loading-dots"><span></span><span></span><span></span></div>
+        <div class="loading-text">선행연구의 N2B 계보를 추적하고 있습니다...</div>
+      </div>
+
+      <div class="result-box" id="litResult">
+        <h4>📚 N2B 문헌리뷰 맵</h4>
+        <div class="content" id="litResultContent"></div>
+        <div class="btn-group">
+          <button class="copy-btn" onclick="copyResult('litResultContent')">📋 복사</button>
+          <button class="btn btn-primary" onclick="goToStage(2)">다음: 논문구조 →</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== STAGE 2: 논문 구조 ==================== -->
+  <section class="stage-panel" id="stage2">
+    <div class="card">
+      <div class="card-header">
+        <span class="emoji">🏗️</span>
+        <div>
+          <h3>N2B 논문 구조 설계</h3>
+          <p>논문의 뼈대를 N2B 논리로 자동 생성합니다</p>
+        </div>
+      </div>
+
+      <div class="n2b-flow">
+        <span class="n">서론: Not (왜 부족한가)</span>
+        <span class="arrow">→</span>
+        <span class="b">본론: But (어떻게 해결하나)</span>
+        <span class="arrow">→</span>
+        <span class="b2">결론: Because (왜 의미있나)</span>
+      </div>
+
+      <div class="card-desc">
+        N2B는 논문의 뼈대 그 자체입니다.<br>
+        서론(기존 한계) → 본론(해결 방법) → 결론(연구 의의).<br>
+        각 섹션의 소제목과 핵심 포인트를 설계합니다.
+      </div>
+
+      <div class="input-group">
+        <label>📄 논문 유형</label>
+        <div class="chip-group" id="paperType">
+          <div class="chip selected" data-value="원저(Original)">원저</div>
+          <div class="chip" data-value="리뷰(Review)">리뷰</div>
+          <div class="chip" data-value="단보(Short Communication)">단보</div>
+          <div class="chip" data-value="기술노트(Technical Note)">기술노트</div>
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label>🔬 연구 방법론</label>
+        <select id="methodSelect">
+          <option value="">선택하세요</option>
+          <option value="실험 연구">실험 연구</option>
+          <option value="시뮬레이션/수치해석">시뮬레이션/수치해석</option>
+          <option value="현장 조사/측정">현장 조사/측정</option>
+          <option value="데이터 분석/ML">데이터 분석/ML</option>
+          <option value="이론적 모델링">이론적 모델링</option>
+          <option value="혼합 연구">혼합 연구</option>
+        </select>
+      </div>
+
+      <button class="btn btn-primary btn-full" onclick="generateStructure()">
+        🏗️ 논문 구조 생성
+      </button>
+
+      <div class="loading" id="structLoading">
+        <div class="loading-dots"><span></span><span></span><span></span></div>
+        <div class="loading-text">N2B 논리로 논문 구조를 설계하고 있습니다...</div>
+      </div>
+
+      <div class="result-box" id="structResult">
+        <h4>🏗️ 논문 구조 (N2B 기반)</h4>
+        <div class="content" id="structResultContent"></div>
+        <div class="btn-group">
+          <button class="copy-btn" onclick="copyResult('structResultContent')">📋 복사</button>
+          <button class="btn btn-primary" onclick="goToStage(3)">다음: 서론작성 →</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== STAGE 3: 서론 작성 ==================== -->
+  <section class="stage-panel" id="stage3">
+    <div class="card">
+      <div class="card-header">
+        <span class="emoji">✍️</span>
+        <div>
+          <h3>N2B 서론 작성</h3>
+          <p>논문에서 가장 어려운 서론, N2B가 잡아줍니다</p>
+        </div>
+      </div>
+
+      <div class="n2b-flow">
+        <span class="n">¶1-2: 배경 + 문제제기</span>
+        <span class="arrow">→</span>
+        <span class="b">¶3: 기존 접근의 한계</span>
+        <span class="arrow">→</span>
+        <span class="b2">¶4: 본 연구의 목적과 기여</span>
+      </div>
+
+      <div class="card-desc">
+        서론은 N2B의 축소판입니다.<br>
+        "이런 문제가 있다(Not) → 기존 방법은 부족하다(But) → 그래서 이 연구가 필요하다(Because)"<br>
+        이 흐름만 잡으면 서론의 80%가 완성됩니다.
+      </div>
+
+      <div class="input-group">
+        <label>🌍 작성 언어</label>
+        <div class="chip-group" id="introLang">
+          <div class="chip selected" data-value="한국어">🇰🇷 한국어</div>
+          <div class="chip" data-value="영어">🇺🇸 영어</div>
+          <div class="chip" data-value="한영 병행">🔄 한영 병행</div>
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label>💬 추가 강조 포인트 (선택사항)</label>
+        <textarea id="introExtra" rows="3" placeholder="서론에 꼭 포함하고 싶은 내용이 있으면 입력하세요.&#10;예: 최근 정책 변화, 특정 사고 사례, 산업 트렌드 등"></textarea>
+      </div>
+
+      <button class="btn btn-primary btn-full" onclick="generateIntro()">
+        ✍️ 서론 초안 생성
+      </button>
+
+      <div class="loading" id="introLoading">
+        <div class="loading-dots"><span></span><span></span><span></span></div>
+        <div class="loading-text">N2B 논리로 서론을 작성하고 있습니다...</div>
+      </div>
+
+      <div class="result-box" id="introResult">
+        <h4>✍️ 서론 초안 (N2B 구조)</h4>
+        <div class="content" id="introResultContent"></div>
+        <div class="btn-group">
+          <button class="copy-btn" onclick="copyResult('introResultContent')">📋 복사</button>
+          <button class="btn btn-primary" onclick="goToStage(4)">다음: 초록생성 →</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== STAGE 4: 초록 생성 ==================== -->
+  <section class="stage-panel" id="stage4">
+    <div class="card">
+      <div class="card-header">
+        <span class="emoji">📋</span>
+        <div>
+          <h3>N2B 초록 생성기</h3>
+          <p>논문의 얼굴, 초록을 N2B 한 문단으로 완성합니다</p>
+        </div>
+      </div>
+
+      <div class="n2b-flow">
+        <span class="n">배경+문제 (2문장)</span>
+        <span class="arrow">→</span>
+        <span class="b">방법+결과 (3문장)</span>
+        <span class="arrow">→</span>
+        <span class="b2">의의+기여 (1-2문장)</span>
+      </div>
+
+      <div class="card-desc">
+        초록은 논문 전체의 N2B를 한 문단에 압축한 것입니다.<br>
+        200~300단어로 핵심만 담아 심사위원의 첫인상을 결정합니다.
+      </div>
+
+      <div class="input-group">
+        <label>📊 핵심 결과 요약</label>
+        <textarea id="keyResults" placeholder="예: 딥러닝 기반 포장 균열 탐지 정확도 94.2% 달성&#10;기존 방법 대비 처리속도 3.5배 향상&#10;현장 적용 테스트에서 오탐률 2.1%"></textarea>
+      </div>
+
+      <div class="input-group">
+        <label>🔢 목표 단어수</label>
+        <div class="chip-group" id="abstractLen">
+          <div class="chip" data-value="150">~150단어</div>
+          <div class="chip selected" data-value="250">~250단어</div>
+          <div class="chip" data-value="350">~350단어</div>
+        </div>
+      </div>
+
+      <button class="btn btn-primary btn-full" onclick="generateAbstract()">
+        📋 초록 생성
+      </button>
+
+      <div class="loading" id="absLoading">
+        <div class="loading-dots"><span></span><span></span><span></span></div>
+        <div class="loading-text">N2B 구조로 초록을 압축하고 있습니다...</div>
+      </div>
+
+      <div class="result-box" id="absResult">
+        <h4>📋 초록 (Abstract)</h4>
+        <div class="content" id="absResultContent"></div>
+        <div class="btn-group">
+          <button class="copy-btn" onclick="copyResult('absResultContent')">📋 복사</button>
+          <button class="btn btn-primary" onclick="goToStage(5)">다음: 저널매칭 →</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== STAGE 5: 저널 매칭 ==================== -->
+  <section class="stage-panel" id="stage5">
+    <div class="card">
+      <div class="card-header">
+        <span class="emoji">📮</span>
+        <div>
+          <h3>저널 매칭 가이드</h3>
+          <p>내 논문에 맞는 최적의 저널을 찾아줍니다</p>
+        </div>
+      </div>
+
+      <div class="card-desc">
+        연구 분야, 주제, 방법론을 종합하여<br>
+        적합한 국내외 학술지를 추천합니다.<br>
+        Impact Factor, 심사기간, 게재율 등을 고려합니다.
+      </div>
+
+      <div class="input-group">
+        <label>🎯 투고 목표</label>
+        <div class="chip-group" id="journalTarget">
+          <div class="chip" data-value="SCI/SCIE">SCI/SCIE</div>
+          <div class="chip" data-value="SCOPUS">SCOPUS</div>
+          <div class="chip selected" data-value="KCI">KCI (국내)</div>
+          <div class="chip" data-value="상관없음">상관없음</div>
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label>⏰ 게재 희망 시점</label>
+        <div class="chip-group" id="journalTimeline">
+          <div class="chip" data-value="급함 (3개월 이내)">🔥 급함</div>
+          <div class="chip selected" data-value="보통 (6개월)">⏳ 보통</div>
+          <div class="chip" data-value="여유 (1년)">🌿 여유</div>
+        </div>
+      </div>
+
+      <button class="btn btn-primary btn-full" onclick="matchJournal()">
+        📮 저널 매칭
+      </button>
+
+      <div class="loading" id="journalLoading">
+        <div class="loading-dots"><span></span><span></span><span></span></div>
+        <div class="loading-text">연구 주제에 맞는 저널을 탐색하고 있습니다...</div>
+      </div>
+
+      <div class="result-box" id="journalResult">
+        <h4>📮 추천 저널 목록</h4>
+        <div class="content" id="journalResultContent"></div>
+        <div class="btn-group">
+          <button class="copy-btn" onclick="copyResult('journalResultContent')">📋 복사</button>
+          <button class="btn btn-primary" onclick="goToStage(6)">다음: 심사대응 →</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== STAGE 6: 심사 대응 ==================== -->
+  <section class="stage-panel" id="stage6">
+    <div class="card">
+      <div class="card-header">
+        <span class="emoji">🛡️</span>
+        <div>
+          <h3>N2B 심사 대응</h3>
+          <p>리뷰어 코멘트를 N2B로 분석하고 답변을 작성합니다</p>
+        </div>
+      </div>
+
+      <div class="n2b-flow">
+        <span class="n">N: 리뷰어 지적</span>
+        <span class="arrow">→</span>
+        <span class="b">B: 인정할 점</span>
+        <span class="arrow">→</span>
+        <span class="b2">B: 수정/반박 근거</span>
+      </div>
+
+      <div class="card-desc">
+        심사의견도 N2B 구조입니다.<br>
+        리뷰어가 지적한 빈틈(Not)을 정확히 파악하고,<br>
+        인정할 것은 인정하되(But), 논리적 근거로 답변(Because)합니다.
+      </div>
+
+      <div class="input-group">
+        <label>📬 리뷰어 코멘트 붙여넣기</label>
+        <textarea id="reviewComment" rows="6" placeholder="리뷰어의 심사의견을 붙여넣으세요.&#10;&#10;예: The methodology lacks sufficient validation...&#10;The sample size is too small to draw meaningful conclusions...&#10;The literature review does not adequately cover recent developments..."></textarea>
+      </div>
+
+      <div class="input-group">
+        <label>🎯 대응 전략</label>
+        <div class="chip-group" id="responseStrategy">
+          <div class="chip selected" data-value="수용+보완">✅ 수용 + 보완</div>
+          <div class="chip" data-value="부분수용">⚖️ 부분 수용</div>
+          <div class="chip" data-value="논리적반박">🔄 논리적 반박</div>
+        </div>
+      </div>
+
+      <button class="btn btn-primary btn-full" onclick="generateReviewResponse()">
+        🛡️ 심사 답변 생성
+      </button>
+
+      <div class="loading" id="reviewLoading">
+        <div class="loading-dots"><span></span><span></span><span></span></div>
+        <div class="loading-text">리뷰어 코멘트를 N2B로 분석하고 있습니다...</div>
+      </div>
+
+      <div class="result-box" id="reviewResult">
+        <h4>🛡️ 심사 답변서 (N2B 기반)</h4>
+        <div class="content" id="reviewResultContent"></div>
+        <div class="btn-group">
+          <button class="copy-btn" onclick="copyResult('reviewResultContent')">📋 복사</button>
+          <button class="btn btn-gold" onclick="showFinalSummary()">🏆 전체 요약 보기</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- BOTTOM NAV -->
+<div class="bottom-nav">
+  <div class="bottom-nav-inner">
+    <button class="btn btn-secondary" id="prevBtn" onclick="prevStage()" style="display:none">
+      ← 이전
+    </button>
+    <button class="btn btn-primary" id="nextBtn" onclick="nextStage()">
+      다음 단계 →
+    </button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">복사되었습니다!</div>
+
+<script>
+// ==================== STATE ====================
+let currentStage = 0;
+const totalStages = 7;
+const stageData = {};
+const completedStages = new Set();
+
+// ==================== GUIDE TOGGLE ====================
+function toggleGuide() {
+  const panel = document.getElementById('guidePanel');
+  const btn = document.getElementById('guideBtn');
+  panel.classList.toggle('open');
+  btn.classList.toggle('open');
+}
+
+// ==================== NAVIGATION ====================
+function goToStage(idx) {
+  if (idx < 0 || idx >= totalStages) return;
+  
+  // Hide current
+  document.querySelectorAll('.stage-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.stage-tab').forEach(t => t.classList.remove('active'));
+  
+  // Show target
+  currentStage = idx;
+  document.getElementById(`stage${idx}`).classList.add('active');
+  document.querySelectorAll('.stage-tab')[idx].classList.add('active');
+  
+  // Scroll tab into view
+  document.querySelectorAll('.stage-tab')[idx].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+  
+  // Update progress
+  document.getElementById('progressFill').style.width = `${((idx + 1) / totalStages) * 100}%`;
+  
+  // Update bottom nav
+  document.getElementById('prevBtn').style.display = idx > 0 ? 'flex' : 'none';
+  document.getElementById('nextBtn').textContent = idx < totalStages - 1 ? '다음 단계 →' : '🏆 완료';
+  
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function nextStage() { goToStage(currentStage + 1); }
+function prevStage() { goToStage(currentStage - 1); }
+
+function markComplete(idx) {
+  completedStages.add(idx);
+  document.querySelectorAll('.stage-tab')[idx].classList.add('completed');
+}
+
+// Tab click
+document.querySelectorAll('.stage-tab').forEach(tab => {
+  tab.addEventListener('click', () => goToStage(parseInt(tab.dataset.stage)));
+});
+
+// Chip selection
+document.querySelectorAll('.chip-group').forEach(group => {
+  group.querySelectorAll('.chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      group.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
+      chip.classList.add('selected');
+    });
+  });
+});
+
+// ==================== API CONFIG ====================
+const API_BASE = 'https://wise-paper-api.onrender.com';
+let USE_API = true; // true면 실제 AI, false면 템플릿
+
+async function callAPI(endpoint, body) {
+  try {
+    const res = await fetch(`${API_BASE}${endpoint}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.detail || `서버 오류 (${res.status})`);
+    }
+    const data = await res.json();
+    return data.result;
+  } catch (e) {
+    if (e.message.includes('Failed to fetch') || e.message.includes('NetworkError')) {
+      throw new Error('서버에 연결할 수 없습니다. 잠시 후 다시 시도해주세요.');
+    }
+    throw e;
+  }
+}
+
+function showAIResult(loadingId, resultId, contentId, content, stageIdx) {
+  hideLoading(loadingId);
+  document.getElementById(contentId).textContent = content;
+  showResult(resultId);
+  markComplete(stageIdx);
+}
+
+// ==================== HELPERS ====================
+function getSelectedChip(groupId) {
+  const sel = document.querySelector(`#${groupId} .chip.selected`);
+  return sel ? sel.dataset.value : '';
+}
+
+function showLoading(id) { document.getElementById(id).classList.add('show'); }
+function hideLoading(id) { document.getElementById(id).classList.remove('show'); }
+function showResult(id) { document.getElementById(id).classList.add('show'); }
+
+function simulateAI(loadingId, resultId, contentId, content, stageIdx) {
+  showLoading(loadingId);
+  setTimeout(() => {
+    hideLoading(loadingId);
+    document.getElementById(contentId).textContent = content;
+    showResult(resultId);
+    markComplete(stageIdx);
+  }, 2000);
+}
+
+function copyResult(contentId) {
+  const text = document.getElementById(contentId).textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const toast = document.getElementById('toast');
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2000);
+  });
+}
+
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2000);
+}
+
+// ==================== STAGE FUNCTIONS ====================
+
+function analyzeTopicN2B() {
+  const topic = document.getElementById('topicInput').value.trim();
+  const field = getSelectedChip('fieldChips');
+  const keywords = document.getElementById('keywordsInput').value.trim();
+  const purpose = document.getElementById('purposeSelect').value;
+  
+  if (!topic) { showToast('⚠️ 연구 주제를 입력해주세요'); return; }
+  
+  stageData.topic = topic;
+  stageData.field = field;
+  stageData.keywords = keywords;
+  stageData.purpose = purpose;
+
+  showLoading('topicLoading');
+
+  if (USE_API) {
+    callAPI('/api/topic', { topic, field, keywords, purpose })
+      .then(result => showAIResult('topicLoading', 'topicResult', 'topicResultContent', result, 0))
+      .catch(err => {
+        console.error(err);
+        showToast('⚠️ AI 서버 연결 실패 — 템플릿 결과를 보여드립니다');
+        analyzeTopicFallback(topic, field, keywords, purpose);
+      });
+  } else {
+    analyzeTopicFallback(topic, field, keywords, purpose);
+  }
+}
+
+function analyzeTopicFallback(topic, field, keywords, purpose) {
+  const isPavement = /포장|pavement|도로|PMS|균열|rutting|crack/i.test(topic + keywords);
+  let result;
+  if (isPavement) {
+    result = `━━━━━━━━━━━━━━━━━━━━━━━━━━
+🎯 연구 주제 N2B 분석 — 포장관리 [템플릿]
+━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📌 주제: ${topic}
+📂 분야: ${field || '공학'}
+🔑 키워드: ${keywords || '포장관리, PMS, 딥러닝, 디지털트윈'}
+
+━━━ 현재 Best Practice (BP) ━━━
+
+🏆 BP1: AI/ML 기반 포장 상태 평가
+🏆 BP2: 디지털트윈(DT) 기반 실시간 모니터링
+🏆 BP3: 강화학습(RL) 기반 유지보수 최적화
+
+━━━ N2B 구조 분석 ━━━
+
+❌ Not: 파편화된 접근, 정적 데이터 의존, 해석 불가
+⚡ But: DT+GNN 통합 가능성 대두 (2024~2025)
+✅ Because: 통합 프레임워크로 실시간 예측·의사결정 일원화
+
+🥊 "파편화된 AI-PMS" vs "통합 디지털트윈 PMS"
+
+⚠️ 이것은 템플릿 결과입니다. API 연결 후 실제 AI 분석이 제공됩니다.`;
+  } else {
+    result = `━━━━━━━━━━━━━━━━━━━━━━━━━━
+🎯 연구 주제 N2B 분석 [템플릿]
+━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📌 주제: ${topic}
+📂 분야: ${field}
+🔑 키워드: ${keywords}
+
+━━━ N2B 구조 분석 ━━━
+
+❌ Not: 이 분야의 체계적 접근 부족
+⚡ But: ${keywords || '최신 기술'}의 발전으로 새 접근 가능
+✅ Because: ${purpose || '새로운 방법론 제안'}으로 기여 가능
+
+⚠️ 이것은 템플릿 결과입니다. API 연결 후 실제 AI 분석이 제공됩니다.`;
+  }
+  simulateAI('topicLoading', 'topicResult', 'topicResultContent', result, 0);
+}
+
+function generateLitReview() {
+  const scope = getSelectedChip('reviewScope');
+  const known = document.getElementById('knownPapers').value.trim();
+  const topic = stageData.topic || '(주제를 먼저 입력해주세요)';
+
+  showLoading('litLoading');
+
+  if (USE_API) {
+    callAPI('/api/literature', {
+      topic, field: stageData.field || '', keywords: stageData.keywords || '', scope, known_papers: known
+    })
+      .then(result => showAIResult('litLoading', 'litResult', 'litResultContent', result, 1))
+      .catch(err => {
+        console.error(err);
+        showToast('⚠️ AI 서버 연결 실패 — 템플릿 결과를 보여드립니다');
+        litReviewFallback(topic, scope, known);
+      });
+  } else {
+    litReviewFallback(topic, scope, known);
+  }
+}
+
+function litReviewFallback(topic, scope, known) {
+  const result = `━━━━━━━━━━━━━━━━━━━━━━━━━━
+📚 N2B 문헌리뷰 맵 [템플릿]
+━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔍 범위: ${scope} | 📌 주제: ${topic}
+
+🔹 1세대 → 2세대 → 3세대 → 4세대(연구 기회)
+
+⚠️ API 연결 후 실제 논문 기반 분석이 제공됩니다.`;
+  simulateAI('litLoading', 'litResult', 'litResultContent', result, 1);
+}
+
+function generateStructure() {
+  const paperType = getSelectedChip('paperType');
+  const method = document.getElementById('methodSelect').value;
+  const topic = stageData.topic || '(주제)';
+  
+  stageData.paperType = paperType;
+  stageData.method = method;
+
+  showLoading('structLoading');
+
+  if (USE_API) {
+    callAPI('/api/structure', {
+      topic, field: stageData.field || '', keywords: stageData.keywords || '',
+      paper_type: paperType, methodology: method
+    })
+      .then(result => showAIResult('structLoading', 'structResult', 'structResultContent', result, 2))
+      .catch(err => {
+        console.error(err);
+        showToast('⚠️ AI 서버 연결 실패 — 템플릿 결과를 보여드립니다');
+        structureFallback(topic, paperType, method);
+      });
+  } else {
+    structureFallback(topic, paperType, method);
+  }
+}
+
+function structureFallback(topic, paperType, method) {
+  const result = `━━━━━━━━━━━━━━━━━━━━━━━━━━
+🏗️ 논문 구조 (N2B 기반) [템플릿]
+━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📄 유형: ${paperType}
+🔬 방법론: ${method}
+📌 주제: ${topic}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. INTRODUCTION (서론) — [N: 왜 부족한가]
+   1.1 연구 배경 및 필요성
+   1.2 기존 연구의 한계
+   1.3 연구 목적 및 범위
+   ✦ N2B 포인트: 빈틈을 선언하고, 연구의 당위성 확보
+
+2. LITERATURE REVIEW (문헌 고찰) — [N→B 전환부]
+   2.1 관련 이론 및 정의
+   2.2 선행연구 동향
+   2.3 기존 접근법의 성과와 한계
+   ✦ N2B 포인트: 빈틈의 계보를 보여주고, 해결의 실마리 제시
+
+3. METHODOLOGY (연구 방법) — [B: 어떻게 해결하나]
+   3.1 연구 설계 및 프레임워크
+   3.2 데이터 수집 및 처리
+   3.3 분석 방법 (${method})
+   3.4 검증 방법
+   ✦ N2B 포인트: 빈틈을 메우는 구체적 방법 제시
+
+4. RESULTS (결과) — [B: 해결의 증거]
+
+5. DISCUSSION (고찰) — [B→Because 전환부]
+
+6. CONCLUSION (결론) — [Because: 왜 의미있나]
+
+━━━ 예상 분량 ━━━
+총 예상: 12~16 페이지
+
+⚠️ API 연결 후 실제 AI 기반 구조 설계가 제공됩니다.`;
+
+  simulateAI('structLoading', 'structResult', 'structResultContent', result, 2);
+}
+
+function generateIntro() {
+  const lang = getSelectedChip('introLang');
+  const extra = document.getElementById('introExtra').value.trim();
+  const topic = stageData.topic || '(주제)';
+
+  showLoading('introLoading');
+
+  if (USE_API) {
+    callAPI('/api/introduction', {
+      topic, field: stageData.field || '', keywords: stageData.keywords || '', language: lang
+    })
+      .then(result => showAIResult('introLoading', 'introResult', 'introResultContent', result + (extra ? '\n\n[추가 강조]\n' + extra : ''), 3))
+      .catch(err => {
+        console.error(err);
+        showToast('⚠️ AI 서버 연결 실패 — 템플릿 결과를 보여드립니다');
+        const result = `서론 초안 [템플릿] — ${topic}\n\n⚠️ API 연결 후 실제 AI 기반 서론이 생성됩니다.`;
+        simulateAI('introLoading', 'introResult', 'introResultContent', result, 3);
+      });
+  } else {
+    const result = `서론 초안 [템플릿] — ${topic}\n\n⚠️ API 연결 후 실제 AI 기반 서론이 생성됩니다.`;
+    simulateAI('introLoading', 'introResult', 'introResultContent', result, 3);
+  }
+}
+
+function generateAbstract() {
+  const keyResults = document.getElementById('keyResults').value.trim();
+  const wordCount = getSelectedChip('abstractLen');
+  const topic = stageData.topic || '(주제)';
+
+  showLoading('absLoading');
+
+  if (USE_API) {
+    callAPI('/api/abstract', {
+      topic, field: stageData.field || '', keywords: stageData.keywords || '',
+      word_count: parseInt(wordCount) || 250, language: '한국어+영어'
+    })
+      .then(result => showAIResult('absLoading', 'absResult', 'absResultContent', result, 4))
+      .catch(err => {
+        console.error(err);
+        showToast('⚠️ AI 서버 연결 실패 — 템플릿 결과를 보여드립니다');
+        const result = `초록 [템플릿] — ${topic} (~${wordCount} words)\n\n⚠️ API 연결 후 실제 AI 기반 초록이 생성됩니다.`;
+        simulateAI('absLoading', 'absResult', 'absResultContent', result, 4);
+      });
+  } else {
+    const result = `초록 [템플릿] — ${topic}\n\n⚠️ API 연결 후 실제 AI 기반 초록이 생성됩니다.`;
+    simulateAI('absLoading', 'absResult', 'absResultContent', result, 4);
+  }
+}
+
+function matchJournal() {
+  const target = getSelectedChip('journalTarget');
+  const timeline = getSelectedChip('journalTimeline');
+  const topic = stageData.topic || '(주제)';
+
+  showLoading('journalLoading');
+
+  if (USE_API) {
+    callAPI('/api/journal', {
+      topic, field: stageData.field || '', keywords: stageData.keywords || '', index_type: target
+    })
+      .then(result => showAIResult('journalLoading', 'journalResult', 'journalResultContent', result, 5))
+      .catch(err => {
+        console.error(err);
+        showToast('⚠️ AI 서버 연결 실패 — 템플릿 결과를 보여드립니다');
+        const result = `저널 매칭 [템플릿] — ${target}\n\n⚠️ API 연결 후 실제 저널 추천이 제공됩니다.`;
+        simulateAI('journalLoading', 'journalResult', 'journalResultContent', result, 5);
+      });
+  } else {
+    const result = `저널 매칭 [템플릿] — ${target}\n\n⚠️ API 연결 후 실제 저널 추천이 제공됩니다.`;
+    simulateAI('journalLoading', 'journalResult', 'journalResultContent', result, 5);
+  }
+}
+
+function generateReviewResponse() {
+  const comment = document.getElementById('reviewComment').value.trim();
+  const strategy = getSelectedChip('responseStrategy');
+  
+  if (!comment) { showToast('⚠️ 리뷰어 코멘트를 입력해주세요'); return; }
+
+  showLoading('reviewLoading');
+
+  if (USE_API) {
+    callAPI('/api/review-response', {
+      topic: stageData.topic || '', reviewer_comment: comment, language: '영어+한국어'
+    })
+      .then(result => showAIResult('reviewLoading', 'reviewResult', 'reviewResultContent', result, 6))
+      .catch(err => {
+        console.error(err);
+        showToast('⚠️ AI 서버 연결 실패 — 템플릿 결과를 보여드립니다');
+        const result = `심사 답변 [템플릿]\n\n리뷰어: "${comment.substring(0, 100)}..."\n대응: ${strategy}\n\n⚠️ API 연결 후 실제 AI 기반 답변이 생성됩니다.`;
+        simulateAI('reviewLoading', 'reviewResult', 'reviewResultContent', result, 6);
+      });
+  } else {
+    const result = `심사 답변 [템플릿]\n\n⚠️ API 연결 후 실제 AI 기반 답변이 생성됩니다.`;
+    simulateAI('reviewLoading', 'reviewResult', 'reviewResultContent', result, 6);
+  }
+}
+
+function showFinalSummary() {
+  showToast('🏆 모든 단계를 완료했습니다! 논문 쓰면 천국! 🎉');
+}
+
+// ==================== INIT ====================
+goToStage(0);
+</script>
+</body>
+</html>
