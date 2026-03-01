@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>📝 슬기로운 논문생활</title>
+<title>🥊 슬기로운 논문생활 — 타이틀매치</title>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/pretendard/1.3.9/static/pretendard.min.css" rel="stylesheet">
 <style>
 :root {
@@ -717,11 +717,11 @@ body {
     <span>N2B</span>
     <span>Framework</span>
   </div>
-  <h1>📝 슬기로운 논문생활</h1>
+  <h1>🥊 슬기로운 논문생활</h1>
   <div class="tagline">
-    논문 쓰면 <span class="heaven">천국</span>, 못 쓰면 <span class="hell">지옥</span>
+    논문 = <span class="heaven">타이틀매치</span>, 빅매치가 잡히면 <span class="hell">80%</span>는 끝
   </div>
-  <div class="sub-tagline"><strong>N2B</strong>가 천국으로 안내합니다</div>
+  <div class="sub-tagline"><strong>N2B</strong> 프레임워크로 타이틀매치를 진행합니다</div>
 </header>
 
 <!-- BIGMATCH MAKER GUIDE -->
@@ -803,30 +803,26 @@ body {
 <!-- STAGE NAVIGATION -->
 <nav class="stage-nav" id="stageNav">
   <div class="stage-tab active" data-stage="0">
-    <span class="icon">🎯</span>
-    <span>주제잡기</span>
+    <span class="icon">🥊</span>
+    <span>빅매치</span>
   </div>
   <div class="stage-tab" data-stage="1">
-    <span class="icon">📚</span>
-    <span>문헌리뷰</span>
-  </div>
-  <div class="stage-tab" data-stage="2">
     <span class="icon">🏗️</span>
     <span>논문구조</span>
   </div>
-  <div class="stage-tab" data-stage="3">
+  <div class="stage-tab" data-stage="2">
     <span class="icon">✍️</span>
     <span>서론작성</span>
   </div>
-  <div class="stage-tab" data-stage="4">
+  <div class="stage-tab" data-stage="3">
     <span class="icon">📋</span>
     <span>초록생성</span>
   </div>
-  <div class="stage-tab" data-stage="5">
+  <div class="stage-tab" data-stage="4">
     <span class="icon">📮</span>
     <span>저널매칭</span>
   </div>
-  <div class="stage-tab" data-stage="6">
+  <div class="stage-tab" data-stage="5">
     <span class="icon">🛡️</span>
     <span>심사대응</span>
   </div>
@@ -835,14 +831,14 @@ body {
 <!-- MAIN CONTENT -->
 <main class="main-content">
 
-  <!-- ==================== STAGE 0: 주제잡기 ==================== -->
+  <!-- ==================== STAGE 0: 빅매치 (타이틀매치) ==================== -->
   <section class="stage-panel active" id="stage0">
     <div class="card">
       <div class="card-header">
-        <span class="emoji">🎯</span>
+        <span class="emoji">🥊</span>
         <div>
-          <h3>주제잡기</h3>
-          <p>N2B로 연구 주제를 잡고, 논문의 뼈대를 세웁니다</p>
+          <h3>타이틀매치 — 빅매치 확인</h3>
+          <p>프로모션에서 성사된 빅매치로 논문을 시작합니다</p>
         </div>
       </div>
 
@@ -854,153 +850,66 @@ body {
         <span class="b2">Because: 이유는 뭔가</span>
       </div>
 
-      <!-- STEP 1: 관심 분야 입력 -->
-      <div id="topicStep1">
-        <div class="input-group">
-          <label>💡 관심 분야 또는 연구 주제를 입력하세요</label>
-          <textarea id="topicInput" rows="3" placeholder="예: 도로 포장관리&#10;예: 노인 건강관리에 AI 적용&#10;예: 중소기업 수출 지원 정책"></textarea>
-        </div>
-
-        <div class="input-group">
-          <label>🎓 연구 분야</label>
-          <div class="chip-group" id="fieldChips">
-            <div class="chip" data-value="공학">⚙️ 공학</div>
-            <div class="chip" data-value="자연과학">🔬 자연과학</div>
-            <div class="chip" data-value="의학/보건">🏥 의학/보건</div>
-            <div class="chip" data-value="사회과학">📊 사회과학</div>
-            <div class="chip" data-value="인문학">📖 인문학</div>
-            <div class="chip" data-value="IT/융합">💻 IT/융합</div>
-          </div>
-        </div>
-
-        <div class="input-group">
-          <label>📝 핵심 키워드 (쉼표로 구분, 선택사항)</label>
-          <input type="text" id="keywordsInput" placeholder="예: 포장관리, 자율주행, 딥러닝, 도로인프라">
-        </div>
-
-        <button class="btn btn-primary btn-full" onclick="startN2BAnalysis()">
-          🔍 N2B 주제잡기 시작
-        </button>
-      </div>
-
-      <!-- STEP 2: Not 결과 -->
-      <div id="topicStep2" style="display:none;">
-        <div class="result-box show" style="border-left:3px solid var(--accent-hell);">
-          <h4>❌ Not — 뭐가 아닌가?</h4>
-          <p style="color:var(--text-secondary); margin-bottom:8px;">현재 Best Practice(BP)의 빈틈입니다</p>
-          <div class="content" id="notContent"></div>
-        </div>
-        <button class="btn btn-primary btn-full" onclick="showButStep()" style="margin-top:12px;">
-          다음: ⚡ But — 그래서 뭔가? →
-        </button>
-      </div>
-
-      <!-- STEP 3: But 결과 -->
-      <div id="topicStep3" style="display:none;">
-        <div class="result-box show" style="border-left:3px solid var(--accent-hell); opacity:0.7; max-height:150px; overflow:hidden;">
-          <h4>❌ Not — 뭐가 아닌가?</h4>
-          <div class="content" id="notContentMini"></div>
-        </div>
-        <div class="result-box show" style="border-left:3px solid var(--accent-gold); margin-top:12px;">
-          <h4>⚡ But — 그래서 뭔가?</h4>
-          <p style="color:var(--text-secondary); margin-bottom:8px;">빈틈에도 불구하고 가능한 새로운 접근입니다</p>
-          <div class="content" id="butContent"></div>
-        </div>
-        <button class="btn btn-primary btn-full" onclick="showBecauseStep()" style="margin-top:12px;">
-          다음: ✅ Because — 이유는 뭔가? →
-        </button>
-      </div>
-
-      <!-- STEP 4: Because 결과 + 빅매치 -->
-      <div id="topicStep4" style="display:none;">
-        <div class="result-box show" style="border-left:3px solid var(--accent-hell); opacity:0.7; max-height:100px; overflow:hidden;">
-          <h4>❌ Not — 뭐가 아닌가?</h4>
-          <div class="content" id="notContentMini2"></div>
-        </div>
-        <div class="result-box show" style="border-left:3px solid var(--accent-gold); opacity:0.7; max-height:100px; overflow:hidden; margin-top:8px;">
-          <h4>⚡ But — 그래서 뭔가?</h4>
-          <div class="content" id="butContentMini"></div>
-        </div>
-        <div class="result-box show" style="border-left:3px solid var(--accent-green); margin-top:12px;">
-          <h4>✅ Because — 이유는 뭔가?</h4>
-          <p style="color:var(--text-secondary); margin-bottom:8px;">이 연구가 필요한 이유와 빅매치 구도입니다</p>
-          <div class="content" id="becauseContent"></div>
-        </div>
-        <div style="display:flex; gap:8px; margin-top:12px;">
-          <button class="copy-btn" onclick="copyFullN2B()">📋 전체 복사</button>
-          <button class="btn btn-primary" style="flex:1;" onclick="goToStage(1)">다음: 문헌리뷰 →</button>
-        </div>
-      </div>
-
-      <!-- 로딩 -->
-      <div class="loading" id="topicLoading">
-        <div class="loading-dots"><span></span><span></span><span></span></div>
-        <div class="loading-text">N2B 구조로 연구 주제를 분석하고 있습니다...</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ==================== STAGE 1: 문헌리뷰 ==================== -->
-  <section class="stage-panel" id="stage1">
-    <div class="card">
-      <div class="card-header">
-        <span class="emoji">📚</span>
-        <div>
-          <h3>N2B 문헌 리뷰</h3>
-          <p>선행연구를 N2B 구조로 체계적으로 정리합니다</p>
-        </div>
-      </div>
-
-      <div class="n2b-flow">
-        <span class="n">Not: 선행연구에서 뭐가 안 되나</span>
-        <span class="arrow">→</span>
-        <span class="b">But: 그래서 뭐가 나왔나</span>
-        <span class="arrow">→</span>
-        <span class="b2">Because: 남은 빈틈 = 나의 연구</span>
-      </div>
-
       <div class="card-desc">
-        AI가 연구 주제 관련 주요 선행연구를 탐색하고,<br>
-        각 연구의 성과와 한계를 N2B 구조로 분류합니다.<br>
-        빈틈의 계보가 곧 문헌리뷰의 논리적 흐름이 됩니다.
+        빅매치가 성사되면 논문의 80%는 끝난 겁니다.<br>
+        아래에 프로모션(주제잡기) 결과를 붙여넣거나, 직접 입력하세요.
+      </div>
+
+      <!-- 빅매치 입력 -->
+      <div class="input-group">
+        <label>🏆 챔피언 (현재 BP — 기존 최고 방법)</label>
+        <input type="text" id="championInput" placeholder="예: 사후탐지형 포장관리, 블랙박스 딥러닝 PMS">
+      </div>
+
+      <div style="text-align:center; font-size:28px; font-weight:800; color:var(--accent-hell); margin:8px 0;">VS</div>
+
+      <div class="input-group">
+        <label>⚡ 도전자 (나의 연구 — 새로운 접근)</label>
+        <input type="text" id="challengerInput" placeholder="예: 사전예측형 스마트 PMS, 설명가능한 포장관리 AI">
       </div>
 
       <div class="input-group">
-        <label>📖 이미 알고 있는 핵심 논문 (선택사항)</label>
-        <textarea id="knownPapers" placeholder="예: Kim et al. (2023) - Deep learning for pavement crack detection&#10;Lee et al. (2022) - Autonomous road inspection system&#10;&#10;알고 있는 논문이 있으면 입력하세요. 없으면 비워두셔도 됩니다."></textarea>
-      </div>
-
-      <div class="input-group">
-        <label>🔢 리뷰 범위</label>
-        <div class="chip-group" id="reviewScope">
-          <div class="chip selected" data-value="최근 5년">최근 5년</div>
-          <div class="chip" data-value="최근 10년">최근 10년</div>
-          <div class="chip" data-value="전체">전체 기간</div>
+        <label>🎓 연구 분야</label>
+        <div class="chip-group" id="fieldChips">
+          <div class="chip" data-value="공학">⚙️ 공학</div>
+          <div class="chip" data-value="자연과학">🔬 자연과학</div>
+          <div class="chip" data-value="의학/보건">🏥 의학/보건</div>
+          <div class="chip" data-value="사회과학">📊 사회과학</div>
+          <div class="chip" data-value="인문학">📖 인문학</div>
+          <div class="chip" data-value="IT/융합">💻 IT/융합</div>
         </div>
       </div>
 
-      <button class="btn btn-primary btn-full" onclick="generateLitReview()">
-        📚 N2B 문헌리뷰 생성
+      <div class="input-group">
+        <label>📝 핵심 키워드 (쉼표로 구분)</label>
+        <input type="text" id="keywordsInput" placeholder="예: 포장관리, 디지털트윈, GNN, 실시간 예측">
+      </div>
+
+      <button class="btn btn-primary btn-full" onclick="confirmBigMatch()">
+        🥊 타이틀매치 시작!
       </button>
 
-      <div class="loading" id="litLoading">
-        <div class="loading-dots"><span></span><span></span><span></span></div>
-        <div class="loading-text">선행연구의 N2B 계보를 추적하고 있습니다...</div>
+      <div style="text-align:center; margin-top:12px;">
+        <a href="https://ikyoo8069-ops.github.io/wise-research/topic.html" target="_blank" 
+           style="color:var(--accent-gold); font-size:13px; text-decoration:none;">
+          💡 아직 빅매치가 없나요? → 프로모션(주제잡기)으로 이동
+        </a>
       </div>
 
-      <div class="result-box" id="litResult">
-        <h4>📚 N2B 문헌리뷰 맵</h4>
-        <div class="content" id="litResultContent"></div>
+      <!-- 빅매치 확정 결과 -->
+      <div class="result-box" id="bigmatchResult">
+        <h4>🥊 타이틀매치 확정!</h4>
+        <div class="content" id="bigmatchContent"></div>
         <div class="btn-group">
-          <button class="copy-btn" onclick="copyResult('litResultContent')">📋 복사</button>
-          <button class="btn btn-primary" onclick="goToStage(2)">다음: 논문구조 →</button>
+          <button class="copy-btn" onclick="copyResult('bigmatchContent')">📋 복사</button>
+          <button class="btn btn-primary" onclick="goToStage(1)">다음: 논문구조 →</button>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ==================== STAGE 2: 논문 구조 ==================== -->
-  <section class="stage-panel" id="stage2">
+  <!-- ==================== STAGE 1: 논문 구조 ==================== -->
+  <section class="stage-panel" id="stage1">
     <div class="card">
       <div class="card-header">
         <span class="emoji">🏗️</span>
@@ -1061,14 +970,14 @@ body {
         <div class="content" id="structResultContent"></div>
         <div class="btn-group">
           <button class="copy-btn" onclick="copyResult('structResultContent')">📋 복사</button>
-          <button class="btn btn-primary" onclick="goToStage(3)">다음: 서론작성 →</button>
+          <button class="btn btn-primary" onclick="goToStage(2)">다음: 서론작성 →</button>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ==================== STAGE 3: 서론 작성 ==================== -->
-  <section class="stage-panel" id="stage3">
+  <!-- ==================== STAGE 2: 서론 작성 ==================== -->
+  <section class="stage-panel" id="stage2">
     <div class="card">
       <div class="card-header">
         <span class="emoji">✍️</span>
@@ -1120,14 +1029,14 @@ body {
         <div class="content" id="introResultContent"></div>
         <div class="btn-group">
           <button class="copy-btn" onclick="copyResult('introResultContent')">📋 복사</button>
-          <button class="btn btn-primary" onclick="goToStage(4)">다음: 초록생성 →</button>
+          <button class="btn btn-primary" onclick="goToStage(3)">다음: 초록생성 →</button>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ==================== STAGE 4: 초록 생성 ==================== -->
-  <section class="stage-panel" id="stage4">
+  <!-- ==================== STAGE 3: 초록 생성 ==================== -->
+  <section class="stage-panel" id="stage3">
     <div class="card">
       <div class="card-header">
         <span class="emoji">📋</span>
@@ -1178,14 +1087,14 @@ body {
         <div class="content" id="absResultContent"></div>
         <div class="btn-group">
           <button class="copy-btn" onclick="copyResult('absResultContent')">📋 복사</button>
-          <button class="btn btn-primary" onclick="goToStage(5)">다음: 저널매칭 →</button>
+          <button class="btn btn-primary" onclick="goToStage(4)">다음: 저널매칭 →</button>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ==================== STAGE 5: 저널 매칭 ==================== -->
-  <section class="stage-panel" id="stage5">
+  <!-- ==================== STAGE 4: 저널 매칭 ==================== -->
+  <section class="stage-panel" id="stage4">
     <div class="card">
       <div class="card-header">
         <span class="emoji">📮</span>
@@ -1234,14 +1143,14 @@ body {
         <div class="content" id="journalResultContent"></div>
         <div class="btn-group">
           <button class="copy-btn" onclick="copyResult('journalResultContent')">📋 복사</button>
-          <button class="btn btn-primary" onclick="goToStage(6)">다음: 심사대응 →</button>
+          <button class="btn btn-primary" onclick="goToStage(5)">다음: 심사대응 →</button>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ==================== STAGE 6: 심사 대응 ==================== -->
-  <section class="stage-panel" id="stage6">
+  <!-- ==================== STAGE 5: 심사 대응 ==================== -->
+  <section class="stage-panel" id="stage5">
     <div class="card">
       <div class="card-header">
         <span class="emoji">🛡️</span>
@@ -1319,7 +1228,7 @@ body {
 <script>
 // ==================== STATE ====================
 let currentStage = 0;
-const totalStages = 7;
+const totalStages = 6;
 const stageData = {};
 const completedStages = new Set();
 
@@ -1450,135 +1359,52 @@ function showToast(msg) {
 
 // ==================== STAGE FUNCTIONS ====================
 
-// ==================== STAGE 0: 주제잡기 (N2B 단계별) ====================
+// ==================== STAGE 0: 빅매치 확인 ====================
 
-let n2bData = { not: '', but: '', because: '' };
-
-function startN2BAnalysis() {
-  const topic = document.getElementById('topicInput').value.trim();
+function confirmBigMatch() {
+  const champion = document.getElementById('championInput').value.trim();
+  const challenger = document.getElementById('challengerInput').value.trim();
   const field = getSelectedChip('fieldChips');
   const keywords = document.getElementById('keywordsInput').value.trim();
-  
-  if (!topic) { showToast('⚠️ 관심 분야를 입력해주세요'); return; }
-  
-  stageData.topic = topic;
+
+  if (!champion || !challenger) {
+    showToast('⚠️ 챔피언과 도전자를 모두 입력해주세요');
+    return;
+  }
+
+  stageData.topic = `${champion} vs ${challenger}`;
+  stageData.champion = champion;
+  stageData.challenger = challenger;
   stageData.field = field;
   stageData.keywords = keywords;
 
-  showLoading('topicLoading');
-  document.getElementById('topicStep1').style.display = 'none';
-
-  if (USE_API) {
-    callAPI('/api/topic', { topic, field, keywords, purpose: '' })
-      .then(result => {
-        hideLoading('topicLoading');
-        parseN2BResult(result);
-        showNotStep();
-      })
-      .catch(err => {
-        console.error(err);
-        hideLoading('topicLoading');
-        showToast('⚠️ AI 서버 연결 실패 — 템플릿 결과를 보여드립니다');
-        parseN2BFallback(topic, field, keywords);
-        showNotStep();
-      });
-  } else {
-    setTimeout(() => {
-      hideLoading('topicLoading');
-      parseN2BFallback(topic, field, keywords);
-      showNotStep();
-    }, 1500);
-  }
-}
-
-function parseN2BResult(result) {
-  // AI 결과를 Not / But / Because 섹션으로 분리
-  const lines = result.split('\n');
-  let section = '';
-  let notLines = [], butLines = [], becauseLines = [];
-  
-  for (const line of lines) {
-    if (/❌|Not.*[:(]|현재.*빈틈|BP.*빈틈/.test(line)) section = 'not';
-    else if (/⚡|But.*[:(]|그럼에도|그래서 뭔가/.test(line)) section = 'but';
-    else if (/✅|Because.*[:(]|그래서.*연구|이유|논문화|빅매치 구도|🥊/.test(line)) section = 'because';
-    
-    if (section === 'not') notLines.push(line);
-    else if (section === 'but') butLines.push(line);
-    else if (section === 'because') becauseLines.push(line);
-  }
-  
-  n2bData.not = notLines.join('\n').trim() || result;
-  n2bData.but = butLines.join('\n').trim() || '(But 분석 결과)';
-  n2bData.because = becauseLines.join('\n').trim() || '(Because 분석 결과)';
-}
-
-function parseN2BFallback(topic, field, keywords) {
-  n2bData.not = `❌ Not — 뭐가 아닌가?\n\n현재 "${topic}" 분야의 빈틈:\n\n1. 기존 접근이 체계적이지 않다\n2. 데이터 기반 의사결정이 부족하다\n3. 통합적 프레임워크가 없다\n4. 실시간 대응이 불가능하다\n5. 해석 가능성이 부족하다\n\n⚠️ API 연결 후 실제 AI 분석이 제공됩니다.`;
-  
-  n2bData.but = `⚡ But — 그래서 뭔가?\n\n그럼에도 불구하고:\n\n→ ${keywords || '최신 기술'}의 발전으로 새 접근 가능\n→ AI/ML 기법이 이 분야에 적용되기 시작\n→ 풍부한 데이터 인프라 활용 가능\n\n⚠️ API 연결 후 실제 AI 분석이 제공됩니다.`;
-  
-  n2bData.because = `✅ Because — 이유는 뭔가?\n\n이 연구가 필요한 이유:\n\nA) 기존 빈틈을 메우는 새 프레임워크 제안\nB) 데이터 기반 의사결정 체계 구축\nC) 실시간 대응 가능한 시스템 개발\n\n━━━ 추천 빅매치 구도 ━━━\n\n🥊 "기존 방식" vs "새로운 접근"\n\n⚠️ API 연결 후 실제 AI 분석이 제공됩니다.`;
-}
-
-function showNotStep() {
-  document.getElementById('notContent').textContent = n2bData.not;
-  document.getElementById('topicStep2').style.display = 'block';
-  markComplete(0);
-}
-
-function showButStep() {
-  document.getElementById('topicStep2').style.display = 'none';
-  document.getElementById('notContentMini').textContent = n2bData.not;
-  document.getElementById('butContent').textContent = n2bData.but;
-  document.getElementById('topicStep3').style.display = 'block';
-}
-
-function showBecauseStep() {
-  document.getElementById('topicStep3').style.display = 'none';
-  document.getElementById('notContentMini2').textContent = n2bData.not;
-  document.getElementById('butContentMini').textContent = n2bData.but;
-  document.getElementById('becauseContent').textContent = n2bData.because;
-  document.getElementById('topicStep4').style.display = 'block';
-}
-
-function copyFullN2B() {
-  const full = `━━━ Not: 뭐가 아닌가? ━━━\n${n2bData.not}\n\n━━━ But: 그래서 뭔가? ━━━\n${n2bData.but}\n\n━━━ Because: 이유는 뭔가? ━━━\n${n2bData.because}`;
-  navigator.clipboard.writeText(full).then(() => showToast('📋 N2B 전체 분석 복사 완료!'));
-}
-
-function generateLitReview() {
-  const scope = getSelectedChip('reviewScope');
-  const known = document.getElementById('knownPapers').value.trim();
-  const topic = stageData.topic || '(주제를 먼저 입력해주세요)';
-
-  showLoading('litLoading');
-
-  if (USE_API) {
-    callAPI('/api/literature', {
-      topic, field: stageData.field || '', keywords: stageData.keywords || '', scope, known_papers: known
-    })
-      .then(result => showAIResult('litLoading', 'litResult', 'litResultContent', result, 1))
-      .catch(err => {
-        console.error(err);
-        showToast('⚠️ AI 서버 연결 실패 — 템플릿 결과를 보여드립니다');
-        litReviewFallback(topic, scope, known);
-      });
-  } else {
-    litReviewFallback(topic, scope, known);
-  }
-}
-
-function litReviewFallback(topic, scope, known) {
-  const result = `━━━━━━━━━━━━━━━━━━━━━━━━━━
-📚 N2B 문헌리뷰 맵 [템플릿]
+  const content = `🥊 타이틀매치 확정!
 ━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-🔍 범위: ${scope} | 📌 주제: ${topic}
+🏆 챔피언 (현재 BP): ${champion}
+⚡ 도전자 (내 연구): ${challenger}
 
-🔹 1세대 → 2세대 → 3세대 → 4세대(연구 기회)
+📂 분야: ${field || '미지정'}
+🔑 키워드: ${keywords || '미지정'}
 
-⚠️ API 연결 후 실제 논문 기반 분석이 제공됩니다.`;
-  simulateAI('litLoading', 'litResult', 'litResultContent', result, 1);
+━━━ 빅매치 구도 ━━━
+
+  "${champion}"
+        🥊 VS
+  "${challenger}"
+
+━━━ 논문 방향 ━━━
+
+Not: "${champion}"이 아닌 이유 → 기존 BP의 빈틈
+But: "${challenger}"가 가능한 이유 → 새로운 접근
+Because: 이 대결이 필요한 이유 → 연구의 의의
+
+💡 빅매치가 성사되면 80%는 끝난 겁니다.
+→ 다음 단계에서 논문 구조를 잡아보세요!`;
+
+  document.getElementById('bigmatchContent').textContent = content;
+  showResult('bigmatchResult');
+  markComplete(0);
 }
 
 function generateStructure() {
