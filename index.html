@@ -868,7 +868,111 @@ body {
   </div>
 </div>
 
-<!-- ==================== APP MAIN (처음엔 숨김) ==================== -->
+<!-- ==================== PROMOTION (주제잡기 - topic.html 통합) ==================== -->
+<div class="app-main" id="promoMain">
+  <header class="header" style="padding-bottom:10px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;max-width:720px;margin:0 auto;">
+      <div>
+        <h1 style="font-size:24px;">🎯 프로모션 — 주제잡기</h1>
+        <div class="sub-tagline">분야 → BP → 빈틈 → 빅매치 성사</div>
+      </div>
+      <button class="btn btn-secondary" style="font-size:12px;padding:8px 12px;" onclick="promoReset()">처음부터</button>
+    </div>
+  </header>
+
+  <!-- 프로모션 단계 표시 -->
+  <div style="display:flex;justify-content:center;gap:4px;padding:12px;overflow-x:auto;">
+    <div class="stage-tab active" id="pt0" onclick="promoGoStep(0)"><span class="icon">🌐</span><span>분야</span></div>
+    <div class="stage-tab" id="pt1" onclick="promoGoStep(1)"><span class="icon">🔍</span><span>BP</span></div>
+    <div class="stage-tab" id="pt2" onclick="promoGoStep(2)"><span class="icon">📜</span><span>역사</span></div>
+    <div class="stage-tab" id="pt3" onclick="promoGoStep(3)"><span class="icon">🕳️</span><span>빈틈</span></div>
+    <div class="stage-tab" id="pt4" onclick="promoGoStep(4)"><span class="icon">⚡</span><span>모순</span></div>
+    <div class="stage-tab" id="pt5" onclick="promoGoStep(5)"><span class="icon">🏆</span><span>빅매치</span></div>
+  </div>
+
+  <main class="main-content">
+
+    <!-- P-STEP 0: 분야 선택 -->
+    <section class="stage-panel active" id="pstep0">
+      <div class="card">
+        <div class="card-header"><span class="emoji">🔬</span><div><h3>어떤 분야를 연구하고 싶으세요?</h3></div></div>
+        <div class="input-group">
+          <label>연구 분야가 있으면 바로 입력하세요</label>
+          <div style="display:flex;gap:8px;">
+            <input type="text" id="promoFieldInput" placeholder="예) 배수성 아스팔트, 가야금 연주법, AI 교육..." style="flex:1" onkeydown="if(event.key==='Enter')promoConfirmField()">
+            <button class="btn btn-primary" onclick="promoConfirmField()" style="white-space:nowrap;">→ BP 탐색</button>
+          </div>
+        </div>
+        <div style="text-align:center;color:var(--text-muted);font-size:13px;margin:16px 0;">아직 막연하면 분야를 좁혀보세요</div>
+        <div class="chip-group" id="promoMajorFields" style="justify-content:center;">
+          <div class="chip" onclick="promoSelectMajor('공학',this)">⚙️ 공학</div>
+          <div class="chip" onclick="promoSelectMajor('자연과학',this)">🔬 자연과학</div>
+          <div class="chip" onclick="promoSelectMajor('의학/보건',this)">🏥 의학/보건</div>
+          <div class="chip" onclick="promoSelectMajor('사회과학',this)">📊 사회과학</div>
+          <div class="chip" onclick="promoSelectMajor('인문학',this)">📖 인문학</div>
+          <div class="chip" onclick="promoSelectMajor('IT/융합',this)">💻 IT/융합</div>
+        </div>
+        <div id="promoMidWrap" style="display:none;margin-top:16px;">
+          <div style="font-size:13px;font-weight:600;color:var(--text-secondary);margin-bottom:8px;" id="promoMidTitle"></div>
+          <div class="chip-group" id="promoMidFields"></div>
+        </div>
+        <div id="promoSubWrap" style="display:none;margin-top:16px;">
+          <div style="font-size:13px;font-weight:600;color:var(--text-secondary);margin-bottom:8px;" id="promoSubTitle"></div>
+          <div class="chip-group" id="promoSubFields"></div>
+        </div>
+        <div id="promoFieldConfirm" style="display:none;margin-top:16px;">
+          <div style="background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.3);border-radius:12px;padding:16px;display:flex;align-items:center;justify-content:space-between;">
+            <div><span style="color:var(--accent-green);font-size:12px;font-weight:600;">✅ 선택된 분야</span><div style="font-size:16px;font-weight:700;margin-top:4px;" id="promoFieldText"></div></div>
+            <button class="btn btn-primary" onclick="promoStartBP()">BP 탐색 →</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- P-STEP 1: BP 탐색 -->
+    <section class="stage-panel" id="pstep1">
+      <div class="card">
+        <div class="card-header"><span class="emoji">🔍</span><div><h3>이 분야의 Best Practice</h3><p>AI가 현재 가장 잘 되고 있는 방법(BP)을 찾습니다</p></div></div>
+        <div id="promoBPResult"><div class="loading" style="display:flex;"><div class="loading-dots"><span></span><span></span><span></span></div><div class="loading-text">BP 검색 중...</div></div></div>
+      </div>
+    </section>
+
+    <!-- P-STEP 2: BP 역사 -->
+    <section class="stage-panel" id="pstep2">
+      <div class="card">
+        <div class="card-header"><span class="emoji">📜</span><div><h3>BP의 역사 — 모순 해결의 계보</h3><p>과거의 빈틈이 오늘의 BP를 만들었습니다</p></div></div>
+        <div id="promoHistoryResult"><div class="loading" style="display:flex;"><div class="loading-dots"><span></span><span></span><span></span></div><div class="loading-text">역사 추적 중...</div></div></div>
+      </div>
+    </section>
+
+    <!-- P-STEP 3: 빈틈 발견 -->
+    <section class="stage-panel" id="pstep3">
+      <div class="card">
+        <div class="card-header"><span class="emoji">🕳️</span><div><h3>BP의 빈틈 — 아직 해결 안 된 문제</h3><p>빈틈 하나를 골라주세요. 이게 연구의 시작점입니다.</p></div></div>
+        <div id="promoGapResult"><div class="loading" style="display:flex;"><div class="loading-dots"><span></span><span></span><span></span></div><div class="loading-text">빈틈 분석 중...</div></div></div>
+      </div>
+    </section>
+
+    <!-- P-STEP 4: 모순 + 트리즈 -->
+    <section class="stage-panel" id="pstep4">
+      <div class="card">
+        <div class="card-header"><span class="emoji">⚡</span><div><h3>모순 정의 + 트리즈 매칭</h3><p>빈틈 속 모순을 TRIZ 40원리로 해결합니다</p></div></div>
+        <div id="promoTrizResult"><div class="loading" style="display:flex;"><div class="loading-dots"><span></span><span></span><span></span></div><div class="loading-text">모순 분석 중...</div></div></div>
+      </div>
+    </section>
+
+    <!-- P-STEP 5: 빅매치 -->
+    <section class="stage-panel" id="pstep5">
+      <div class="card">
+        <div class="card-header"><span class="emoji">🏆</span><div><h3>빅매치 — 연구 주제 완성!</h3><p>대립하는 이름이 붙으면 싸움 구도 = 연구 주제</p></div></div>
+        <div id="promoBigmatchResult"><div class="loading" style="display:flex;"><div class="loading-dots"><span></span><span></span><span></span></div><div class="loading-text">빅매치 구성 중...</div></div></div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- ==================== APP MAIN (타이틀매치 - 처음엔 숨김) ==================== -->
 <div class="app-main" id="appMain">
 
 <!-- HEADER -->
@@ -1390,13 +1494,35 @@ body {
 <script>
 // ==================== LANDING PAGE ====================
 function goPromotion() {
-  window.location.href = 'https://ikyoo8069-ops.github.io/wise-research/topic.html';
+  document.getElementById('landingPage').style.display = 'none';
+  document.getElementById('promoMain').classList.add('show');
 }
 
 function goTitleMatch() {
   document.getElementById('landingPage').style.display = 'none';
   document.getElementById('appMain').classList.add('show');
   goToStage(0);
+}
+
+function promoToTitleMatch(champion, challenger, field) {
+  // 프로모션에서 빅매치 성사 → 타이틀매치로 자동 전환
+  document.getElementById('promoMain').classList.remove('show');
+  document.getElementById('promoMain').style.display = 'none';
+  document.getElementById('appMain').classList.add('show');
+  goToStage(0);
+  // 자동 입력
+  setTimeout(() => {
+    document.getElementById('championInput').value = champion;
+    document.getElementById('challengerInput').value = challenger;
+    // 분야 칩 선택
+    if (field) {
+      const majorField = field.split('>')[0].trim().split(' ').pop();
+      document.querySelectorAll('#fieldChips .chip').forEach(c => {
+        if (c.dataset.value === majorField) c.classList.add('selected');
+      });
+    }
+    showToast('🥊 빅매치가 타이틀매치로 전달되었습니다! 확인 후 시작하세요');
+  }, 300);
 }
 
 // URL 파라미터로 빅매치 결과 자동 수신
@@ -1768,6 +1894,205 @@ function generateReviewResponse() {
 
 function showFinalSummary() {
   showToast('🏆 모든 단계를 완료했습니다! 논문 쓰면 천국! 🎉');
+}
+
+// ==================== PROMOTION (주제잡기) ====================
+const PROMO_API = 'https://wise-research-api.onrender.com';
+const promoState = { step:0, field:'', major:'', bp:null, gaps:[], selectedGap:null, triz:null, bigmatch:null };
+
+const promoTaxonomy = {
+  "공학":{"토목":["도로","구조","수자원","지반","교통"],"기계":["열역학","유체","재료","로봇","자동차"],"전기전자":["반도체","통신","전력","제어","IoT"],"컴퓨터":["AI/ML","보안","네트워크","소프트웨어","데이터"],"화학공학":["촉매","고분자","에너지","바이오","나노"],"건축":["설계","구조","환경설비","도시계획","BIM"]},
+  "자연과학":{"물리":["입자","응집","광학","천문","양자"],"화학":["유기","무기","분석","물리화학","생화학"],"생물":["분자","세포","생태","유전","미생물"],"수학":["대수","해석","기하","통계","응용수학"],"지구과학":["기상","해양","지질","환경","기후"]},
+  "의학/보건":{"기초의학":["해부","생리","약리","병리","면역"],"임상의학":["내과","외과","소아","정신","재활"],"보건학":["역학","보건정책","영양","산업보건"],"간호학":["성인","아동","정신","지역사회"],"약학":["약물","제제","임상약학","천연물"]},
+  "사회과학":{"경영":["전략","마케팅","재무","인사","창업"],"경제":["거시","미시","국제","노동","금융"],"법학":["헌법","민법","형법","행정법","국제법"],"행정":["정책","조직","재정","지방행정","복지"],"교육":["교육공학","교육심리","교육과정","평생교육"],"심리":["임상","상담","인지","발달","사회"]},
+  "인문학":{"언어":["한국어","영어","일본어","중국어","독어"],"문학":["한국문학","영미문학","비교문학","고전","현대"],"역사":["한국사","동양사","서양사","고고학","문화사"],"철학":["동양","서양","윤리","미학","종교"],"예술":["미술","음악","무용","연극","영화"]},
+  "IT/융합":{"인공지능":["딥러닝","NLP","컴퓨터비전","로보틱스","생성AI"],"데이터":["빅데이터","분석","시각화","엔지니어링"],"보안":["사이버보안","암호학","포렌식","블록체인"],"바이오융합":["디지털헬스","의료AI","유전체"],"에너지":["태양광","수소","배터리","스마트그리드"]}
+};
+
+async function promoCallAI(system, userMsg) {
+  const res = await fetch(PROMO_API + '/chat', {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ system, messages:[{role:'user',content:userMsg}] })
+  });
+  if (!res.ok) throw new Error('API error: '+res.status);
+  const data = await res.json();
+  return data.content;
+}
+
+function promoGoStep(n) {
+  document.querySelectorAll('#promoMain .stage-panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('pstep'+n).classList.add('active');
+  for(let i=0;i<=5;i++){
+    const t=document.getElementById('pt'+i);
+    t.classList.remove('active');
+    if(i===n) t.classList.add('active');
+    else if(i<n) t.classList.add('completed');
+  }
+  promoState.step=n;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function promoSelectMajor(name,el) {
+  promoState.major=name;
+  document.querySelectorAll('#promoMajorFields .chip').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+  const mids=Object.keys(promoTaxonomy[name]||{});
+  document.getElementById('promoMidTitle').textContent=name+' — 어느 쪽?';
+  document.getElementById('promoMidFields').innerHTML=mids.map(m=>`<div class="chip" onclick="promoSelectMid('${name}','${m}',this)">${m}</div>`).join('');
+  document.getElementById('promoMidWrap').style.display='block';
+  document.getElementById('promoSubWrap').style.display='none';
+  document.getElementById('promoFieldConfirm').style.display='none';
+}
+
+function promoSelectMid(major,mid,el) {
+  document.querySelectorAll('#promoMidFields .chip').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+  const subs=promoTaxonomy[major]?.[mid]||[];
+  document.getElementById('promoSubTitle').textContent=mid+' — 세부 분야는?';
+  document.getElementById('promoSubFields').innerHTML=subs.map(s=>`<div class="chip" onclick="promoSelectSub('${major}','${mid}','${s}',this)">${s}</div>`).join('');
+  document.getElementById('promoSubWrap').style.display='block';
+  document.getElementById('promoFieldConfirm').style.display='none';
+}
+
+function promoSelectSub(major,mid,sub,el) {
+  document.querySelectorAll('#promoSubFields .chip').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+  promoState.field=major+' > '+mid+' > '+sub;
+  document.getElementById('promoFieldText').textContent=promoState.field;
+  document.getElementById('promoFieldConfirm').style.display='block';
+}
+
+function promoConfirmField() {
+  const v=document.getElementById('promoFieldInput').value.trim();
+  if(!v) return;
+  promoState.field=v;
+  promoStartBP();
+}
+
+async function promoStartBP() {
+  promoGoStep(1);
+  const area=document.getElementById('promoBPResult');
+  area.innerHTML='<div style="text-align:center;padding:24px;color:var(--text-muted);">🔍 BP를 검색하고 있습니다...</div>';
+  try {
+    const text=await promoCallAI('당신은 연구 분야의 Best Practice 전문가입니다. 한국어. 간결하게.',
+      `분야: ${promoState.field}\n\n[BP]\n이름: (핵심 방법)\n설명: (왜 최선인지 2문장)\n핵심성과: (구체적 성과)\n\n[한계요약]\n한줄: (아직 해결 안 된 것)`);
+    const bp=promoParseBP(text); promoState.bp=bp;
+    area.innerHTML=`<div class="result-box show" style="border-left:3px solid var(--accent-heaven);"><h4>📦 현재 Best Practice</h4><div class="content"><strong>${bp.name}</strong><br>${bp.desc}${bp.perf?'<br>📈 '+bp.perf:''}${bp.limit?'<br><span style="color:var(--accent-gold);">⚠️ '+bp.limit+'</span>':''}</div></div>
+      <div style="display:flex;gap:8px;margin-top:12px;"><button class="btn btn-primary" onclick="promoStartHistory()">📜 역사 보기 →</button><button class="btn btn-secondary" onclick="promoStartGaps()">빈틈 바로 찾기 →</button></div>`;
+  } catch(e) { area.innerHTML=`<div style="color:var(--accent-hell);">⚠️ ${e.message}<br><button class="btn btn-primary" onclick="promoStartBP()" style="margin-top:8px;">재시도</button></div>`; }
+}
+
+function promoParseBP(t){return{name:(t.match(/이름[:\s]*(.+)/)||[])[1]?.trim()||'BP',desc:(t.match(/설명[:\s]*([\s\S]*?)(?=핵심|한계|\[|$)/)||[])[1]?.trim()||'',perf:(t.match(/핵심성과[:\s]*(.+)/)||[])[1]?.trim()||'',limit:(t.match(/한줄[:\s]*(.+)/)||[])[1]?.trim()||''};}
+
+async function promoStartHistory() {
+  promoGoStep(2);
+  const area=document.getElementById('promoHistoryResult');
+  area.innerHTML='<div style="text-align:center;padding:24px;color:var(--text-muted);">📜 역사를 추적하고 있습니다...</div>';
+  try {
+    const text=await promoCallAI('BP 발전 역사 전문가. 3~5단계. 한국어.',
+      `분야: ${promoState.field}\nBP: ${promoState.bp?.name}\n\n[시대1]\n년도:\n방법:\n빈틈:\n해결:\n\n[현재]\n년도: 현재\n방법: ${promoState.bp?.name}\n빈틈: (남은 한계)`);
+    const eras=text.split(/\[시대\d+\]|\[현재\]/).filter(b=>b.trim()).map(b=>({
+      year:(b.match(/년도[:\s]*(.+)/)||[])[1]?.trim()||'',method:(b.match(/방법[:\s]*(.+)/)||[])[1]?.trim()||'',
+      gap:(b.match(/빈틈[:\s]*(.+)/)||[])[1]?.trim()||'',solved:(b.match(/해결[:\s]*(.+)/)||[])[1]?.trim()||''}));
+    let html='';
+    eras.forEach(e=>{html+=`<div style="padding:12px 0;border-left:2px solid var(--border-color);margin-left:8px;padding-left:16px;"><span style="color:var(--accent-heaven);font-size:12px;font-weight:600;">${e.year}</span><div style="font-weight:600;">${e.method}</div>${e.gap?'<div style="color:var(--accent-gold);font-size:13px;">🕳️ '+e.gap+'</div>':''}${e.solved?'<div style="color:var(--accent-green);font-size:13px;">✅ '+e.solved+'</div>':''}</div>`;});
+    html+=`<button class="btn btn-primary btn-full" onclick="promoStartGaps()" style="margin-top:12px;">🕳️ 빈틈 찾기 →</button>`;
+    area.innerHTML=html;
+  } catch(e) { area.innerHTML=`<div style="color:var(--accent-hell);">⚠️ ${e.message}<br><button class="btn btn-primary" onclick="promoStartHistory()" style="margin-top:8px;">재시도</button></div>`; }
+}
+
+async function promoStartGaps() {
+  promoGoStep(3);
+  const area=document.getElementById('promoGapResult');
+  area.innerHTML='<div style="text-align:center;padding:24px;color:var(--text-muted);">🕳️ 빈틈을 분석하고 있습니다...</div>';
+  try {
+    const text=await promoCallAI('BP의 빈틈 전문가. 빈틈 3개. 한국어.',
+      `분야: ${promoState.field}\nBP: ${promoState.bp?.name}\n\n[GAP1]\n빈틈:\n이유:\n\n[GAP2]\n빈틈:\n이유:\n\n[GAP3]\n빈틈:\n이유:`);
+    const gaps=text.split(/\[GAP\d+\]/).filter(b=>b.trim()).map(b=>({
+      name:(b.match(/빈틈[:\s]*(.+)/)||[])[1]?.trim()||'',why:(b.match(/이유[:\s]*(.+)/)||[])[1]?.trim()||''}));
+    promoState.gaps=gaps;
+    let html='';
+    gaps.forEach((g,i)=>{html+=`<div class="chip" style="display:block;padding:12px;margin-bottom:8px;cursor:pointer;text-align:left;" onclick="promoSelectGap(${i},this)" id="pgap${i}"><div style="color:var(--accent-gold);font-size:11px;font-weight:600;">빈틈 ${i+1}</div><div style="font-weight:600;">${g.name}</div><div style="font-size:12px;color:var(--text-muted);">${g.why}</div></div>`;});
+    html+=`<div style="font-size:12px;color:var(--text-muted);margin-top:8px;">👆 하나를 골라주세요</div>`;
+    area.innerHTML=html;
+  } catch(e) { area.innerHTML=`<div style="color:var(--accent-hell);">⚠️ ${e.message}<br><button class="btn btn-primary" onclick="promoStartGaps()" style="margin-top:8px;">재시도</button></div>`; }
+}
+
+function promoSelectGap(i,el) {
+  promoState.selectedGap=promoState.gaps[i];
+  document.querySelectorAll('#promoGapResult .chip').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+  if(!document.getElementById('promoGapNext')) {
+    const btn=document.createElement('button');btn.id='promoGapNext';btn.className='btn btn-primary btn-full';btn.style.marginTop='12px';
+    btn.textContent='⚡ 모순+트리즈 분석 →';btn.onclick=promoStartTriz;
+    document.getElementById('promoGapResult').appendChild(btn);
+  }
+}
+
+async function promoStartTriz() {
+  promoGoStep(4);
+  const area=document.getElementById('promoTrizResult');
+  area.innerHTML='<div style="text-align:center;padding:24px;color:var(--text-muted);">⚡ 모순을 분석하고 있습니다...</div>';
+  try {
+    const text=await promoCallAI('TRIZ 전문가. 한국어.',
+      `분야: ${promoState.field}\nBP: ${promoState.bp?.name}\n빈틈: ${promoState.selectedGap?.name}\n\n[모순]\n개선하면:\n악화되는:\n\n[원리1]\n번호:\n이름:\n적용:\n\n[원리2]\n번호:\n이름:\n적용:`);
+    const improve=(text.match(/개선하면[:\s]*(.+)/)||[])[1]?.trim()||'';
+    const worsen=(text.match(/악화되는[:\s]*(.+)/)||[])[1]?.trim()||'';
+    const principles=text.split(/\[원리\d+\]/).filter(b=>b.includes('번호')).map(b=>({
+      num:(b.match(/번호[:\s]*(.+)/)||[])[1]?.trim()||'',name:(b.match(/이름[:\s]*(.+)/)||[])[1]?.trim()||'',
+      apply:(b.match(/적용[:\s]*([\s\S]*?)$/)||[])[1]?.trim()||''}));
+    promoState.triz={improve,worsen,principles};
+    let html=`<div class="result-box show" style="border-left:3px solid var(--accent-hell);"><h4>⚡ 기술적 모순</h4><div class="content">개선 ↑ ${improve}<br>악화 ↓ ${worsen}</div></div>`;
+    principles.forEach(p=>{html+=`<div class="result-box show" style="border-left:3px solid var(--accent-purple);margin-top:8px;"><h4>TRIZ #${p.num}: ${p.name}</h4><div class="content">${p.apply}</div></div>`;});
+    html+=`<button class="btn btn-primary btn-full" onclick="promoStartBigmatch()" style="margin-top:12px;">🏆 빅매치 이름 짓기 →</button>`;
+    area.innerHTML=html;
+  } catch(e) { area.innerHTML=`<div style="color:var(--accent-hell);">⚠️ ${e.message}<br><button class="btn btn-primary" onclick="promoStartTriz()" style="margin-top:8px;">재시도</button></div>`; }
+}
+
+async function promoStartBigmatch() {
+  promoGoStep(5);
+  const area=document.getElementById('promoBigmatchResult');
+  area.innerHTML='<div style="text-align:center;padding:24px;color:var(--text-muted);">🏆 빅매치를 구성하고 있습니다...</div>';
+  try {
+    const trizInfo=(promoState.triz?.principles||[]).map(p=>p.name+': '+p.apply).join('\n');
+    const text=await promoCallAI('빅매치 이름짓기 전문가. 한국어.',
+      `분야: ${promoState.field}\nBP: ${promoState.bp?.name}\n빈틈: ${promoState.selectedGap?.name}\n모순: ${promoState.triz?.improve} / ${promoState.triz?.worsen}\nTRIZ:\n${trizInfo}\n\n[빅매치]\n제목:\nA코너: (도전자)\nB코너: (챔피언)\n한줄설명:\n\n[연구질문]\nRQ:`);
+    const bm={title:(text.match(/제목[:\s]*(.+)/)||[])[1]?.trim()||'',
+      a:(text.match(/A코너[:\s]*(.+)/)||[])[1]?.trim()||'',b:(text.match(/B코너[:\s]*(.+)/)||[])[1]?.trim()||'',
+      desc:(text.match(/한줄설명[:\s]*(.+)/)||[])[1]?.trim()||'',rq:(text.match(/RQ[:\s]*(.+)/)||[])[1]?.trim()||''};
+    promoState.bigmatch=bm;
+    area.innerHTML=`
+      <div style="text-align:center;padding:24px;background:linear-gradient(135deg,rgba(251,191,36,0.1),rgba(251,146,60,0.05));border:2px solid rgba(251,191,36,0.4);border-radius:16px;">
+        <div style="font-size:12px;color:var(--accent-gold);font-weight:700;">🏆 BIGMATCH</div>
+        <div style="font-size:20px;font-weight:900;margin:8px 0;">${bm.title}</div>
+        <div style="display:flex;align-items:center;justify-content:center;gap:16px;margin:16px 0;flex-wrap:wrap;">
+          <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:12px;padding:12px 20px;">
+            <div style="font-size:11px;color:var(--text-muted);">🆕 도전자</div>
+            <div style="font-weight:700;color:var(--accent-heaven);">${bm.a}</div>
+          </div>
+          <div style="font-size:24px;font-weight:900;color:var(--accent-gold);">VS</div>
+          <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:12px;padding:12px 20px;">
+            <div style="font-size:11px;color:var(--text-muted);">📦 챔피언</div>
+            <div style="font-weight:700;color:var(--accent-gold);">${bm.b}</div>
+          </div>
+        </div>
+        <div style="color:var(--text-secondary);font-size:14px;">${bm.desc}</div>
+        ${bm.rq?'<div style="margin-top:12px;font-size:13px;"><strong style="color:var(--accent-gold);">RQ:</strong> '+bm.rq+'</div>':''}
+      </div>
+      <button class="btn btn-primary btn-full" onclick="promoToTitleMatch('${bm.b.replace(/'/g,"\\'")}','${bm.a.replace(/'/g,"\\'")}','${promoState.field.replace(/'/g,"\\'")}')" style="margin-top:16px;font-size:16px;padding:16px;">
+        🥊 타이틀매치로 → 논문쓰기 시작!
+      </button>`;
+  } catch(e) { area.innerHTML=`<div style="color:var(--accent-hell);">⚠️ ${e.message}<br><button class="btn btn-primary" onclick="promoStartBigmatch()" style="margin-top:8px;">재시도</button></div>`; }
+}
+
+function promoReset() {
+  Object.assign(promoState,{step:0,field:'',major:'',bp:null,gaps:[],selectedGap:null,triz:null,bigmatch:null});
+  document.getElementById('promoFieldInput').value='';
+  document.getElementById('promoMidWrap').style.display='none';
+  document.getElementById('promoSubWrap').style.display='none';
+  document.getElementById('promoFieldConfirm').style.display='none';
+  document.querySelectorAll('#promoMajorFields .chip').forEach(c=>c.classList.remove('selected'));
+  promoGoStep(0);
 }
 
 // ==================== INIT ====================
